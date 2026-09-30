@@ -1,0 +1,9 @@
+*
+!Dockerfile
+!Makefile
+!src/
+!src/*.cpp
+!include/
+!include/*.h
+!scripts/
+!scripts/*.py

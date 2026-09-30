@@ -1,0 +1,34 @@
+{
+  "fecha_utc": "2026-09-30T18:56:07.369472+00:00",
+  "sistema": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.39",
+  "arquitectura": "aarch64",
+  "procesador_visible": "aarch64",
+  "compilador": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cpu_logicas_visibles": 8,
+  "cpu_max_cgroup": "200000 100000",
+  "memoria_max_cgroup": "2147483648",
+  "kernel": "7.0.12-linuxkit",
+  "distribucion": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo",
+  "sha256_main_cpp": "75f4072fd6be6a1295dc35962ab6d89980288733be0d4f095c6722aaf1a0e099",
+  "sha256_fuentes": {
+    "include/estadisticas.h": "4ff590d2b785e1b6e89cbe56a5b061b7978e29d9f989476ecc5a63ac61645522",
+    "include/modelo.h": "8773d73c536e4b910bc121a9d0bb177b00738d559eab0e720b90638644aab22b",
+    "include/opciones.h": "d10a92d98606afa8e570557b8574565915ba8fa9ccf7278f010f319934f93ebc",
+    "include/simulacion.h": "0e58844f7a8bd1b2a6eae4291bf286d430223e9f7e438c7b2f309d2abc9802fb",
+    "include/terminal.h": "906a61d6b554827fbe9f1f9cd8da555911a739656371d557a34bb270d17d74a2",
+    "src/estadisticas.cpp": "09f6493cd7e68431ac69a8d76e4115c0bcfbde013ec7ef3aa1781386bfbae468",
+    "src/main.cpp": "75f4072fd6be6a1295dc35962ab6d89980288733be0d4f095c6722aaf1a0e099",
+    "src/opciones.cpp": "fbc054b455ea9107cfd9d5006d6a398bb95da54a85923fcb0778f01575ce6923",
+    "src/simulacion.cpp": "87ef211572a2179f18347ed9e2243adca6377c71e82701ef20bd850e0eba1283",
+    "src/terminal.cpp": "53bdd04f48216e2d3622f4adc4cf9b949797a451c6bafa6ffb0c64368fcbcd6d"
+  },
+  "referencia": [
+    1600,
+    1600,
+    160
+  ],
+  "repeticiones": 3,
+  "opcion_comun": "-ffp-contract=off",
+  "calentamiento": "una ejecución completa por compilación",
+  "nota": "Cronometra el bucle C++; no incluye arranque de Docker, compilación ni salida. No se fija frecuencia de CPU."
+}

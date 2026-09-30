@@ -1,0 +1,21 @@
+{
+  "fecha_utc": "2026-09-30T17:32:34.460733+00:00",
+  "sistema": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.39",
+  "arquitectura": "aarch64",
+  "procesador_visible": "aarch64",
+  "compilador": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cpu_logicas_visibles": 8,
+  "cpu_max_cgroup": "200000 100000",
+  "memoria_max_cgroup": "2147483648",
+  "kernel": "7.0.12-linuxkit",
+  "distribucion": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo",
+  "sha256_main_cpp": "1d86901e66922b26c9020ee5e7ed1aef05098c64ec39e3022914927f05a121a6",
+  "referencia": [
+    1600,
+    1600,
+    160
+  ],
+  "repeticiones": 3,
+  "calentamiento": "una ejecución completa por compilación",
+  "nota": "Cronometra el bucle C++; no incluye arranque de Docker, compilación ni salida. No se fija frecuencia de CPU."
+}

@@ -1,0 +1,275 @@
+/usr/include/c++/13/bits/char_traits.h:399:25: missed: statement clobbers memory: _3 = __builtin_strlen (__lhs_2(D));
+/usr/include/c++/13/bits/basic_string.h:3537:20: missed: not vectorized: statement can throw an exception: std::__cxx11::basic_string<char>::reserve (_1(D), _13);
+/usr/include/c++/13/bits/basic_string.h:1459:18: missed: not vectorized: statement can throw an exception: std::__cxx11::basic_string<char>::_M_append (_1(D), __lhs_2(D), _3);
+/usr/include/c++/13/bits/basic_string.h:1459:18: missed: not vectorized: statement can throw an exception: std::__cxx11::basic_string<char>::_M_append (_1(D), ISRA.134_7(D), ISRA.135_8(D));
+/usr/include/c++/13/bits/basic_string.h:400:24: missed: not vectorized: statement can throw an exception: std::__throw_length_error ("basic_string::append");
+/usr/include/c++/13/bits/basic_string.h:400:24: missed: not vectorized: statement can throw an exception: std::__throw_length_error ("basic_string::append");
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (_1(D));
+opciones.cpp:12:13: missed: splitting region at control altering definition D.65760 = std::operator+.isra ("Valor inv\xc3\xa1lido para ", _50, _51); [return slot optimization]
+/usr/include/c++/13/ext/string_conversions.h:82:34: missed: statement clobbers memory: _56 = strtoull (_10, &__endptr, 10);
+opciones.cpp:21:43: missed: statement clobbers memory: _15 = __cxa_allocate_exception (16);
+opciones.cpp:21:43: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_15, "");
+opciones.cpp:21:43: missed: not vectorized: statement can throw an exception: __cxa_throw (_15, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:21:43: missed: statement clobbers memory: __cxa_free_exception (_15);
+opciones.cpp:12:13: missed: not vectorized: statement can throw an exception: resx 11
+/usr/include/c++/13/ext/string_conversions.h:88:27: missed: not vectorized: statement can throw an exception: std::__throw_out_of_range ("stoull");
+/usr/include/c++/13/ext/string_conversions.h:85:31: missed: not vectorized: statement can throw an exception: std::__throw_invalid_argument ("stoull");
+opciones.cpp:12:13: missed: not vectorized: statement can throw an exception: resx 28
+opciones.cpp:24:7: missed: statement clobbers memory: _19 = __builtin_eh_filter (9);
+opciones.cpp:24:34: missed: statement clobbers memory: _3 = __builtin_eh_pointer (9);
+opciones.cpp:24:34: missed: statement clobbers memory: __cxa_begin_catch (_3);
+opciones.cpp:25:69: missed: statement clobbers memory: _22 = __cxa_allocate_exception (16);
+opciones.cpp:25:61: missed: not vectorized: statement can throw an exception: D.65760 = std::operator+.isra ("Valor inv\xc3\xa1lido para ", _50, _51); [return slot optimization]
+opciones.cpp:25:61: missed: splitting region at dominance boundary bb42
+opciones.cpp:25:69: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_22, &D.65760);
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.65760);
+opciones.cpp:25:69: missed: not vectorized: statement can throw an exception: __cxa_throw (_22, &_ZTISt16invalid_argument, __dt_comp );
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.65760);
+opciones.cpp:12:13: missed: not vectorized: statement can throw an exception: resx 17
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb29
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb30
+opciones.cpp:25:69: missed: statement clobbers memory: __cxa_free_exception (_22);
+opciones.cpp:12:13: missed: not vectorized: statement can throw an exception: resx 15
+opciones.cpp:25:69: missed: splitting region at dominance boundary bb47
+opciones.cpp:26:5: missed: statement clobbers memory: __cxa_end_catch ();
+opciones.cpp:26:5: missed: splitting region at dominance boundary bb46
+opciones.cpp:26:5: missed: splitting region at dominance boundary bb31
+opciones.cpp:26:5: missed: splitting region at control altering definition D.65748 = std::operator+.isra ("Valor inv\xc3\xa1lido para ", _52, _53); [return slot optimization]
+opciones.cpp:14:69: missed: statement clobbers memory: _32 = __cxa_allocate_exception (16);
+opciones.cpp:14:61: missed: not vectorized: statement can throw an exception: D.65748 = std::operator+.isra ("Valor inv\xc3\xa1lido para ", _52, _53); [return slot optimization]
+opciones.cpp:14:61: missed: splitting region at dominance boundary bb33
+opciones.cpp:14:69: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_32, &D.65748);
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.65748);
+opciones.cpp:14:69: missed: statement clobbers memory: __cxa_throw (_32, &_ZTISt16invalid_argument, __dt_comp );
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.65748);
+opciones.cpp:12:13: missed: not vectorized: statement can throw an exception: resx 3
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb21
+opciones.cpp:14:69: missed: statement clobbers memory: __cxa_free_exception (_32);
+opciones.cpp:29:7: missed: splitting region at control altering definition D.65773 = std::operator+.isra ("Valor inv\xc3\xa1lido para ", _36, _37); [return slot optimization]
+/usr/include/c++/13/ext/string_conversions.h:82:34: missed: statement clobbers memory: _40 = strtof (_10, &__endptr);
+opciones.cpp:34:43: missed: statement clobbers memory: _13 = __cxa_allocate_exception (16);
+opciones.cpp:34:43: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_13, "");
+opciones.cpp:34:43: missed: not vectorized: statement can throw an exception: __cxa_throw (_13, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:34:43: missed: statement clobbers memory: __cxa_free_exception (_13);
+opciones.cpp:29:7: missed: not vectorized: statement can throw an exception: resx 3
+/usr/include/c++/13/ext/string_conversions.h:88:27: missed: not vectorized: statement can throw an exception: std::__throw_out_of_range ("stof");
+/usr/include/c++/13/ext/string_conversions.h:85:31: missed: not vectorized: statement can throw an exception: std::__throw_invalid_argument ("stof");
+opciones.cpp:29:7: missed: not vectorized: statement can throw an exception: resx 18
+opciones.cpp:37:7: missed: statement clobbers memory: _17 = __builtin_eh_filter (1);
+opciones.cpp:37:34: missed: statement clobbers memory: _2 = __builtin_eh_pointer (1);
+opciones.cpp:37:34: missed: statement clobbers memory: __cxa_begin_catch (_2);
+opciones.cpp:38:69: missed: statement clobbers memory: _20 = __cxa_allocate_exception (16);
+opciones.cpp:38:61: missed: not vectorized: statement can throw an exception: D.65773 = std::operator+.isra ("Valor inv\xc3\xa1lido para ", _36, _37); [return slot optimization]
+opciones.cpp:38:61: missed: splitting region at dominance boundary bb34
+opciones.cpp:38:69: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_20, &D.65773);
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.65773);
+opciones.cpp:38:69: missed: not vectorized: statement can throw an exception: __cxa_throw (_20, &_ZTISt16invalid_argument, __dt_comp );
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.65773);
+opciones.cpp:29:7: missed: not vectorized: statement can throw an exception: resx 9
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb23
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb24
+opciones.cpp:38:69: missed: statement clobbers memory: __cxa_free_exception (_20);
+opciones.cpp:29:7: missed: not vectorized: statement can throw an exception: resx 7
+opciones.cpp:39:5: missed: statement clobbers memory: __cxa_end_catch ();
+opciones.cpp:101:37: missed: couldn't vectorize loop
+opciones.cpp:101:37: missed: not vectorized: control flow in loop.
+opciones.cpp:66:1: missed: couldn't vectorize loop
+opciones.cpp:66:1: missed: not vectorized: control flow in loop.
+opciones.cpp:98:9: missed: splitting region at control altering definition _163 = std::__cxx11::basic_string<char>::_M_create (&argument, &__dnew, 0);
+/usr/include/c++/13/bits/char_traits.h:399:25: missed: statement clobbers memory: _159 = __builtin_strlen (_4);
+/usr/include/c++/13/bits/basic_string.tcc:229:13: missed: not vectorized: statement can throw an exception: _163 = std::__cxx11::basic_string<char>::_M_create (&argument, &__dnew, 0);
+opciones.h:9:8: optimized: basic block part vectorized using 16 byte vectors
+opciones.h:9:8: optimized: basic block part vectorized using 16 byte vectors
+opciones.h:9:8: optimized: basic block part vectorized using 16 byte vectors
+opciones.h:9:8: optimized: basic block part vectorized using 16 byte vectors
+opciones.h:9:8: optimized: basic block part vectorized using 16 byte vectors
+opciones.h:9:8: optimized: basic block part vectorized using 16 byte vectors
+opciones.h:9:8: missed: splitting region at dominance boundary bb8
+opciones.h:9:8: missed: splitting region at dominance boundary bb12
+/usr/include/c++/13/bits/basic_string.h:250:31: missed: splitting region at dominance boundary bb13
+/usr/include/c++/13/bits/char_traits.h:435:49: missed: statement clobbers memory: __builtin_memcpy (_318, _4, _159);
+/usr/include/c++/13/bits/basic_string.h:223:28: missed: splitting region at control altering definition _207 = std::__cxx11::basic_string<char>::_M_create (&value, &__dnew, 0);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _200 = __builtin_memcmp (_451, "--no-color", 10);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _195 = __builtin_memcmp (_446, "--ascii", 7);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _185 = __builtin_memcmp (_648, "--measure", 9);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _190 = __builtin_memcmp (_648, "--profile", 9);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _180 = __builtin_memcmp (_413, "--visual", 8);
+/usr/include/c++/13/bits/new_allocator.h:172:26: missed: statement clobbers memory: operator delete (_464, _412);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _173 = __builtin_memcmp (_623, "--help", 6);
+/usr/include/c++/13/bits/char_traits.h:399:25: missed: statement clobbers memory: _203 = __builtin_strlen (_9);
+/usr/include/c++/13/bits/basic_string.tcc:229:13: missed: not vectorized: statement can throw an exception: _207 = std::__cxx11::basic_string<char>::_M_create (&value, &__dnew, 0);
+/usr/include/c++/13/bits/basic_string.tcc:229:13: missed: splitting region at dominance boundary bb55
+/usr/include/c++/13/bits/basic_string.tcc:229:13: missed: splitting region at dominance boundary bb59
+/usr/include/c++/13/bits/basic_string.h:250:31: missed: splitting region at dominance boundary bb60
+/usr/include/c++/13/bits/char_traits.h:435:49: missed: statement clobbers memory: __builtin_memcpy (_622, _9, _203);
+/usr/include/c++/13/bits/basic_string.h:223:28: missed: splitting region at control altering definition _85 = {anonymous}::parse_integer (&value, &argument);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _237 = __builtin_memcmp (_633, "--moisture", 10);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _247 = __builtin_memcmp (_633, "--fire-row", 10);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _252 = __builtin_memcmp (_633, "--fire-col", 10);
+opciones.cpp:151:45: missed: not vectorized: statement can throw an exception: _85 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:151:45: missed: splitting region at dominance boundary bb95
+opciones.cpp:152:30: missed: splitting region at dominance boundary bb90
+opciones.cpp:152:30: missed: splitting region at control altering definition _89 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:148:45: missed: not vectorized: statement can throw an exception: _89 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:148:45: missed: splitting region at dominance boundary bb91
+opciones.cpp:149:30: missed: splitting region at dominance boundary bb82
+opciones.cpp:149:30: missed: splitting region at control altering definition _96 = {anonymous}::parse_decimal (&value, &argument);
+opciones.cpp:144:45: missed: not vectorized: statement can throw an exception: _96 = {anonymous}::parse_decimal (&value, &argument);
+opciones.cpp:144:45: missed: splitting region at dominance boundary bb83
+opciones.cpp:144:30: missed: splitting region at dominance boundary bb69
+opciones.cpp:144:30: missed: splitting region at control altering definition _77 = {anonymous}::parse_integer (&value, &argument);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _227 = __builtin_memcmp (_491, "--steps", 7);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _257 = __builtin_memcmp (_491, "--delay", 7);
+opciones.cpp:154:39: missed: not vectorized: statement can throw an exception: _77 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:154:39: missed: splitting region at loop 1 exit at bb102
+opciones.cpp:158:27: missed: splitting region at dominance boundary bb100
+opciones.cpp:156:78: missed: statement clobbers memory: _80 = __cxa_allocate_exception (16);
+opciones.cpp:156:78: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_80, "--delay debe estar en [0,60000]");
+opciones.cpp:156:78: missed: not vectorized: statement can throw an exception: __cxa_throw (_80, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:156:78: missed: statement clobbers memory: __cxa_free_exception (_80);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 23
+opciones.cpp:156:78: missed: splitting region at dominance boundary bb70
+opciones.cpp:156:78: missed: splitting region at control altering definition _107 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:136:42: missed: not vectorized: statement can throw an exception: _107 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:136:42: missed: splitting region at dominance boundary bb71
+opciones.cpp:136:27: missed: splitting region at dominance boundary bb61
+opciones.cpp:136:27: missed: splitting region at dominance boundary bb106
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _217 = __builtin_memcmp (_460, "--rows", 6);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _222 = __builtin_memcmp (_460, "--cols", 6);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _232 = __builtin_memcmp (_460, "--seed", 6);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _242 = __builtin_memcmp (_460, "--wind", 6);
+/usr/include/c++/13/bits/basic_string.h:3731:9: missed: splitting region at dominance boundary bb134
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _262 = __builtin_memcmp (prephitmp_461, "--wind-dir", 10);
+/usr/include/c++/13/bits/basic_string.h:3731:9: missed: splitting region at control altering definition D.67169 = std::operator+.isra ("Opci\xc3\xb3n desconocida: ", _141, _142); [return slot optimization]
+opciones.cpp:162:75: missed: statement clobbers memory: _68 = __cxa_allocate_exception (16);
+opciones.cpp:162:65: missed: not vectorized: statement can throw an exception: D.67169 = std::operator+.isra ("Opci\xc3\xb3n desconocida: ", _141, _142); [return slot optimization]
+opciones.cpp:162:65: missed: splitting region at dominance boundary bb201
+opciones.cpp:162:75: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_68, &D.67169);
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.67169);
+opciones.cpp:162:75: missed: not vectorized: statement can throw an exception: __cxa_throw (_68, &_ZTISt16invalid_argument, __dt_comp );
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.67169);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 27
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb202
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb107
+opciones.cpp:162:75: missed: statement clobbers memory: __cxa_free_exception (_68);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 25
+opciones.cpp:162:75: missed: splitting region at loop 1 exit at bb119
+/usr/include/c++/13/bits/char_traits.h:435:49: missed: statement clobbers memory: __builtin_memcpy (&MEM[(struct basic_string *)&directions + 32B].D.29392._M_local_buf, "NE", 2);
+/usr/include/c++/13/bits/char_traits.h:435:49: missed: statement clobbers memory: __builtin_memcpy (&MEM[(struct basic_string *)&directions + 96B].D.29392._M_local_buf, "SE", 2);
+/usr/include/c++/13/bits/char_traits.h:435:49: missed: statement clobbers memory: __builtin_memcpy (&MEM[(struct basic_string *)&directions + 160B].D.29392._M_local_buf, "SW", 2);
+/usr/include/c++/13/bits/char_traits.h:435:49: missed: statement clobbers memory: __builtin_memcpy (&MEM[(struct basic_string *)&directions + 224B].D.29392._M_local_buf, "NW", 2);
+opciones.cpp:54:15: missed: not vectorized: more than one data ref in stmt: horizontal = *.LC0;
+opciones.cpp:55:15: missed: not vectorized: more than one data ref in stmt: vertical = *.LC1;
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _561 = __builtin_memcmp (_328, &MEM[(struct basic_string *)&directions + 32B].D.29392._M_local_buf, 2);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _454 = __builtin_memcmp (_328, &MEM[(struct basic_string *)&directions + 96B].D.29392._M_local_buf, 2);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _680 = __builtin_memcmp (_328, &MEM[(struct basic_string *)&directions + 160B].D.29392._M_local_buf, 2);
+/usr/include/c++/13/bits/char_traits.h:389:25: missed: statement clobbers memory: _363 = __builtin_memcmp (_328, &MEM[(struct basic_string *)&directions + 224B].D.29392._M_local_buf, 2);
+/usr/include/c++/13/bits/char_traits.h:358:7: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/char_traits.h:358:7: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/char_traits.h:358:7: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/char_traits.h:358:7: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/char_traits.h:358:7: missed: splitting region at dominance boundary bb117
+opciones.cpp:65:84: missed: statement clobbers memory: _272 = __cxa_allocate_exception (16);
+opciones.cpp:65:84: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_272, "Direcci\xc3\xb3n de viento: N, NE, E, SE, S, SW, W o NW");
+opciones.cpp:65:84: missed: statement clobbers memory: __cxa_free_exception (_272);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 47
+opciones.cpp:65:84: missed: not vectorized: statement can throw an exception: __cxa_throw (_272, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:65:84: missed: splitting region at loop 1 exit at bb128
+/usr/include/c++/13/bits/basic_string.h:1608:17: missed: not vectorized: statement can throw an exception: std::__cxx11::basic_string<char>::_M_assign (_267, &value);
+/usr/include/c++/13/bits/basic_string.h:1608:17: missed: splitting region at dominance boundary bb129
+/usr/include/c++/13/bits/basic_string.h:1608:17: missed: splitting region at dominance boundary bb118
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (_283);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 46
+opciones.cpp:66:1: missed: splitting region at dominance boundary bb86
+/usr/include/c++/13/bits/new_allocator.h:172:26: missed: statement clobbers memory: operator delete (_387, _391);
+opciones.cpp:60:24: missed: not vectorized: vectorization is not profitable.
+opciones.cpp:60:24: missed: not vectorized: vectorization is not profitable.
+opciones.cpp:60:24: missed: splitting region at control altering definition _93 = {anonymous}::parse_decimal (&value, &argument);
+opciones.cpp:146:41: missed: not vectorized: statement can throw an exception: _93 = {anonymous}::parse_decimal (&value, &argument);
+opciones.cpp:146:41: missed: splitting region at dominance boundary bb87
+opciones.cpp:146:26: missed: splitting region at dominance boundary bb74
+opciones.cpp:146:26: missed: splitting region at control altering definition _99 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:138:38: missed: not vectorized: statement can throw an exception: _99 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:138:38: missed: splitting region at loop 1 exit at bb77
+opciones.cpp:142:26: missed: splitting region at dominance boundary bb75
+opciones.cpp:140:69: missed: statement clobbers memory: _102 = __cxa_allocate_exception (16);
+opciones.cpp:140:69: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_102, "Semilla fuera de rango");
+opciones.cpp:140:69: missed: not vectorized: statement can throw an exception: __cxa_throw (_102, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:140:69: missed: statement clobbers memory: __cxa_free_exception (_102);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 21
+opciones.cpp:140:69: missed: splitting region at dominance boundary bb66
+opciones.cpp:140:69: missed: splitting region at control altering definition _110 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:134:41: missed: not vectorized: statement can throw an exception: _110 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:134:41: missed: splitting region at dominance boundary bb67
+opciones.cpp:134:26: missed: splitting region at dominance boundary bb62
+opciones.cpp:134:26: missed: splitting region at control altering definition _113 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:132:41: missed: not vectorized: statement can throw an exception: _113 = {anonymous}::parse_integer (&value, &argument);
+opciones.cpp:132:41: missed: splitting region at dominance boundary bb138
+opciones.cpp:132:26: missed: splitting region at dominance boundary bb145
+/usr/include/c++/13/bits/new_allocator.h:172:26: missed: statement clobbers memory: operator delete (_400, _404);
+/usr/include/c++/13/bits/new_allocator.h:172:26: missed: statement clobbers memory: operator delete (_394, _398);
+/usr/include/c++/13/bits/new_allocator.h:172:26: missed: splitting region at loop 1 exit at bb146
+opciones.cpp:100:23: missed: splitting region at dominance boundary bb152
+opciones.cpp:72:18: missed: splitting region at dominance boundary bb149
+opciones.cpp:92:83: missed: statement clobbers memory: _435 = __cxa_allocate_exception (16);
+opciones.cpp:92:83: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_435, "Foco fuera del terreno (coordenadas desde 0)");
+opciones.cpp:92:83: missed: statement clobbers memory: __cxa_free_exception (_435);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 49
+opciones.cpp:92:83: missed: not vectorized: statement can throw an exception: __cxa_throw (_435, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:82:76: missed: statement clobbers memory: _428 = __cxa_allocate_exception (16);
+opciones.cpp:82:76: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_428, "Humedad y viento deben estar en [0,1]");
+opciones.cpp:82:76: missed: statement clobbers memory: __cxa_free_exception (_428);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 50
+opciones.cpp:82:76: missed: not vectorized: statement can throw an exception: __cxa_throw (_428, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:79:68: missed: statement clobbers memory: _425 = __cxa_allocate_exception (16);
+opciones.cpp:79:68: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_425, "Dimensiones demasiado grandes");
+opciones.cpp:79:68: missed: statement clobbers memory: __cxa_free_exception (_425);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 51
+opciones.cpp:79:68: missed: not vectorized: statement can throw an exception: __cxa_throw (_425, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:73:88: missed: statement clobbers memory: _421 = __cxa_allocate_exception (16);
+opciones.cpp:73:88: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_421, "Filas, columnas e iteraciones deben ser positivas");
+opciones.cpp:73:88: missed: statement clobbers memory: __cxa_free_exception (_421);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 52
+opciones.cpp:73:88: missed: not vectorized: statement can throw an exception: __cxa_throw (_421, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:73:88: missed: splitting region at dominance boundary bb214
+opciones.cpp:70:75: missed: statement clobbers memory: _417 = __cxa_allocate_exception (16);
+opciones.cpp:70:75: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_417, "--profile no se combina con --visual");
+opciones.cpp:70:75: missed: statement clobbers memory: __cxa_free_exception (_417);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 53
+opciones.cpp:70:75: missed: not vectorized: statement can throw an exception: __cxa_throw (_417, &_ZTISt16invalid_argument, __dt_comp );
+opciones.cpp:70:75: missed: splitting region at dominance boundary bb204
+opciones.cpp:70:75: missed: splitting region at dominance boundary bb205
+opciones.cpp:70:75: missed: splitting region at dominance boundary bb50
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&value);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 20
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb45
+/usr/include/c++/13/bits/basic_string.h:646:28: missed: not vectorized: statement can throw an exception: std::__throw_logic_error ("basic_string: construction from null is not valid");
+/usr/include/c++/13/bits/basic_string.h:646:28: missed: splitting region at control altering definition D.67075 = std::operator+.isra ("Falta valor para ", _143, _144); [return slot optimization]
+opciones.cpp:127:71: missed: statement clobbers memory: _119 = __cxa_allocate_exception (16);
+opciones.cpp:127:61: missed: not vectorized: statement can throw an exception: D.67075 = std::operator+.isra ("Falta valor para ", _143, _144); [return slot optimization]
+opciones.cpp:127:61: missed: splitting region at dominance boundary bb192
+opciones.cpp:127:71: missed: not vectorized: statement can throw an exception: std::invalid_argument::invalid_argument (_119, &D.67075);
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.67075);
+opciones.cpp:127:71: missed: not vectorized: statement can throw an exception: __cxa_throw (_119, &_ZTISt16invalid_argument, __dt_comp );
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.67075);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 10
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb193
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb16
+opciones.cpp:127:71: missed: statement clobbers memory: __cxa_free_exception (_119);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 8
+opciones.cpp:127:71: missed: splitting region at dominance boundary bb208
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "Incendio secuencial C++17. Coordenadas de base 0.\n", 50);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "--rows N --cols N --steps N --seed N --moisture X [0,1]\n", 56);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "--wind-dir N|NE|E|SE|S|SW|W|NW --wind X [0,1]\n", 46);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "--fire-row N --fire-col N --visual|--measure|--profile --delay MS --ascii --no-color\n", 85);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "--profile: diagn\xc3\xb3stico de tiempos por fase, separado de la medici\xc3\xb3n habitual.\n", 80);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "En modo visual: + acelera, - frena, espacio pausa, n avanza un paso, q termina.\n", 80);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "Por defecto: 30x60, 80 pasos, semilla 42, humedad .28, viento E .6, foco (filas/2,columnas/5), medici\xc3\xb3n; pausa visual 180 ms.\n", 127);
+/usr/include/c++/13/ostream:667:18: missed: splitting region at dominance boundary bb29
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&argument);
+opciones.cpp:98:9: missed: not vectorized: statement can throw an exception: resx 7
+/usr/include/c++/13/bits/basic_string.h:804:23: missed: splitting region at dominance boundary bb4
+opciones.cpp:104:22: missed: statement clobbers memory: exit (0);
+opciones.cpp:104:22: missed: splitting region at dominance boundary bb211
+/usr/include/c++/13/bits/basic_string.h:646:28: missed: not vectorized: statement can throw an exception: std::__throw_logic_error ("basic_string: construction from null is not valid");
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (_65);

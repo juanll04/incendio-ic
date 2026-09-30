@@ -1,0 +1,38 @@
+     1	#include "estadisticas.h"
+     2	
+     3	#include <cstring>
+     4	
+     5	Stats statistics(const Grid& cells, std::size_t initial_trees) {
+     6	    Stats result;
+     7	    for (const Cell& cell : cells) {
+     8	        ++result.count[cell.state];
+     9	        if (cell.state == TREE) {
+    10	            result.mean += cell.moisture;
+    11	        }
+    12	    }
+    13	    if (result.count[TREE]) {
+    14	        result.mean /= result.count[TREE];
+    15	    }
+    16	    result.affected = initial_trees - result.count[TREE];
+    17	    return result;
+    18	}
+    19	
+    20	std::uint64_t checksum(const Grid& cells) {
+    21	    std::uint64_t hash = 1469598103934665603ULL;
+    22	    for (const Cell& cell : cells) {
+    23	        // Se copian los bits del float: convertirlo a entero perdería información.
+    24	        std::uint32_t moisture_bits;
+    25	        static_assert(sizeof(moisture_bits) == sizeof(cell.moisture));
+    26	        std::memcpy(&moisture_bits, &cell.moisture, sizeof(moisture_bits));
+    27	
+    28	        // El relleno de Cell no participa: solo estado, combustible y humedad.
+    29	        for (unsigned value : {static_cast<unsigned>(cell.state),
+    30	                               static_cast<unsigned>(cell.fuel), moisture_bits}) {
+    31	            for (int byte = 0; byte < 4; ++byte) {
+    32	                hash ^= (value >> (byte * 8)) & 255u;
+    33	                hash *= 1099511628211ULL;
+    34	            }
+    35	        }
+    36	    }
+    37	    return hash;
+    38	}

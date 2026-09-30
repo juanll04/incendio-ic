@@ -1,0 +1,255 @@
+/usr/include/c++/13/bits/new_allocator.h:172:26: missed: statement clobbers memory: operator delete (_6, _15);
+main.cpp:34:79: missed: couldn't vectorize loop
+main.cpp:34:79: missed: not vectorized: control flow in loop.
+main.cpp:108:29: missed: couldn't vectorize loop
+main.cpp:140:5: missed: not vectorized: relevant stmt not supported: patt_465 = (long unsigned int) patt_464;
+/usr/include/c++/13/bits/stl_algobase.h:918:22: missed: couldn't vectorize loop
+/usr/include/c++/13/bits/stl_algobase.h:919:2: missed: not vectorized: more than one data ref in stmt: *__first_269 = MEM[(const struct Cell &)_79];
+main.cpp:140:5: missed: splitting region at control altering definition D.78433 = parse_options (argc_12(D), argv_13(D)); [return slot optimization]
+main.cpp:142:44: missed: not vectorized: statement can throw an exception: D.78433 = parse_options (argc_12(D), argv_13(D)); [return slot optimization]
+main.cpp:142:44: missed: splitting region at control altering definition current = initialize (&D.78433); [return slot optimization]
+main.cpp:104:38: missed: not vectorized: statement can throw an exception: current = initialize (&D.78433); [return slot optimization]
+main.cpp:104:38: missed: splitting region at dominance boundary bb4
+main.cpp:104:38: missed: splitting region at control altering definition _79 = operator new (_71);
+/usr/include/c++/13/bits/new_allocator.h:151:48: missed: not vectorized: statement can throw an exception: _79 = operator new (_71);
+/usr/include/c++/13/bits/stl_vector.h:100:4: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/stl_vector.h:100:4: missed: splitting region at dominance boundary bb10
+/usr/include/c++/13/bits/stl_vector.h:100:4: missed: splitting region at dominance boundary bb13
+/usr/include/c++/13/bits/stl_algobase.h:919:2: missed: not vectorized: more than one data ref in stmt: *__first_269 = MEM[(const struct Cell &)_79];
+/usr/include/c++/13/bits/stl_construct.h:119:7: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/stl_construct.h:119:7: missed: splitting region at control altering definition _55 = Terminal::input_enabled (&terminal);
+main.cpp:112:37: missed: not vectorized: statement can throw an exception: Terminal::Terminal (&terminal, _53);
+main.cpp:113:60: missed: not vectorized: statement can throw an exception: _55 = Terminal::input_enabled (&terminal);
+main.cpp:109:23: missed: splitting region at dominance boundary bb17
+main.cpp:109:23: missed: splitting region at control altering definition _57 = Terminal::output_is_terminal (&terminal);
+main.cpp:114:28: missed: not vectorized: statement can throw an exception: install_signal_handlers ();
+main.cpp:116:31: missed: not vectorized: statement can throw an exception: Terminal::begin_display (&terminal);
+main.cpp:117:13: missed: not vectorized: statement can throw an exception: _57 = Terminal::output_is_terminal (&terminal);
+main.cpp:117:13: missed: splitting region at dominance boundary bb24
+main.cpp:117:13: missed: splitting region at dominance boundary bb26
+main.cpp:117:13: missed: not vectorized: statement can throw an exception: draw (&current, &D.78433, &playback, 0, initial_trees_36, _57);
+main.cpp:117:13: missed: splitting region at control altering definition _139 = interruption_requested ();
+main.cpp:32:28: missed: statement clobbers memory: start = std::chrono::_V2::steady_clock::now ();
+main.cpp:34:79: missed: not vectorized: statement can throw an exception: _139 = interruption_requested ();
+main.cpp:34:79: missed: splitting region at dominance boundary bb67
+main.cpp:34:79: missed: splitting region at loop 3 exit at bb272
+main.cpp:34:53: missed: splitting region at dominance boundary bb68
+main.cpp:34:53: missed: splitting region at control altering definition _87 = Terminal::output_is_terminal (&terminal);
+main.cpp:35:58: missed: not vectorized: statement can throw an exception: _87 = Terminal::output_is_terminal (&terminal);
+main.cpp:35:58: missed: splitting region at dominance boundary bb29
+main.cpp:35:58: missed: splitting region at control altering definition _89 = wait_frame (&playback, &terminal, &current, &D.78433, step_72, initial_trees_36);
+main.cpp:36:24: missed: not vectorized: statement can throw an exception: _89 = wait_frame (&playback, &terminal, &current, &D.78433, step_72, initial_trees_36);
+main.cpp:36:24: missed: splitting region at dominance boundary bb32
+main.cpp:36:24: missed: splitting region at dominance boundary bb36
+main.cpp:35:61: missed: splitting region at dominance boundary bb38
+main.cpp:42:63: missed: splitting region at dominance boundary bb37
+main.cpp:42:43: missed: splitting region at dominance boundary bb39
+main.cpp:42:75: missed: statement clobbers memory: work_start = std::chrono::_V2::steady_clock::now ();
+main.cpp:42:75: missed: splitting region at loop 3 exit at bb40
+main.cpp:43:24: missed: not vectorized: statement can throw an exception: update_moisture (&current, &next, _95, _96);
+main.cpp:43:24: missed: splitting region at dominance boundary bb41
+main.cpp:43:24: missed: splitting region at control altering definition _99 = update_fire (&current, &next, &D.78433);
+main.cpp:44:57: missed: statement clobbers memory: moisture_end = std::chrono::_V2::steady_clock::now ();
+main.cpp:45:47: missed: not vectorized: statement can throw an exception: _99 = update_fire (&current, &next, &D.78433);
+main.cpp:45:47: missed: splitting region at dominance boundary bb45
+main.cpp:45:47: missed: splitting region at control altering definition _132 = Terminal::output_is_terminal (&terminal);
+main.cpp:47:39: missed: statement clobbers memory: fire_end = std::chrono::_V2::steady_clock::now ();
+main.cpp:55:38: missed: statement clobbers memory: D.84931 = std::chrono::_V2::steady_clock::now ();
+main.cpp:63:44: missed: not vectorized: statement can throw an exception: _132 = Terminal::output_is_terminal (&terminal);
+/usr/include/c++/13/bits/stl_vector.h:115:13: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/stl_vector.h:115:13: optimized: basic block part vectorized using 16 byte vectors
+/usr/include/c++/13/bits/stl_vector.h:115:13: missed: splitting region at dominance boundary bb56
+/usr/include/c++/13/bits/stl_vector.h:115:13: missed: splitting region at control altering definition _136 = Terminal::output_is_terminal (&terminal);
+main.cpp:64:21: missed: not vectorized: statement can throw an exception: _136 = Terminal::output_is_terminal (&terminal);
+main.cpp:140:5: missed: splitting region at dominance boundary bb60
+main.cpp:140:5: missed: splitting region at loop 3 exit at bb61
+main.cpp:64:21: missed: not vectorized: statement can throw an exception: draw (&current, &D.78433, &playback, _129, initial_trees_36, _136);
+main.cpp:64:21: missed: splitting region at dominance boundary bb62
+main.cpp:64:21: missed: splitting region at dominance boundary bb64
+main.cpp:34:47: missed: splitting region at loop 3 exit at bb271
+main.cpp:34:53: missed: splitting region at dominance boundary bb248
+main.cpp:34:53: missed: splitting region at dominance boundary bb270
+main.cpp:34:53: missed: splitting region at dominance boundary bb33
+main.cpp:34:53: missed: splitting region at control altering definition _90 = interruption_requested ();
+main.cpp:37:65: missed: not vectorized: statement can throw an exception: _90 = interruption_requested ();
+main.cpp:37:65: missed: splitting region at dominance boundary bb35
+main.cpp:37:65: missed: splitting region at dominance boundary bb69
+main.cpp:37:40: missed: splitting region at control altering definition stats = statistics (&current, initial_trees_36); [return slot optimization]
+main.cpp:73:26: missed: statement clobbers memory: end = std::chrono::_V2::steady_clock::now ();
+main.cpp:121:28: missed: not vectorized: statement can throw an exception: Terminal::restore_cursor (&terminal);
+main.cpp:122:29: missed: not vectorized: statement can throw an exception: stats = statistics (&current, initial_trees_36); [return slot optimization]
+main.cpp:122:29: missed: splitting region at dominance boundary bb75
+main.cpp:122:29: missed: splitting region at control altering definition _156 = std::basic_ostream<char>::_M_insert<long unsigned int> (&cout, _155);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "Resumen: ", 9);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _156 = std::basic_ostream<char>::_M_insert<long unsigned int> (&cout, _155);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb79
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _158 = std::basic_ostream<char>::_M_insert<long unsigned int> (_156, _157);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_156, "x", 1);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _158 = std::basic_ostream<char>::_M_insert<long unsigned int> (_156, _157);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb83
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _164 = std::basic_ostream<char>::_M_insert<long unsigned int> (_158, _163);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_158, "=", 1);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _164 = std::basic_ostream<char>::_M_insert<long unsigned int> (_158, _163);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb87
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _167 = std::basic_ostream<char>::_M_insert<long unsigned int> (_164, _166);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_164, " celdas; semilla=", 17);
+/usr/include/c++/13/ostream:198:18: missed: not vectorized: statement can throw an exception: _167 = std::basic_ostream<char>::_M_insert<long unsigned int> (_164, _166);
+/usr/include/c++/13/ostream:198:18: missed: splitting region at dominance boundary bb91
+/usr/include/c++/13/ostream:198:18: missed: splitting region at control altering definition _170 = std::basic_ostream<char>::_M_insert<double> (_167, _169);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_167, "; humedad=", 10);
+/usr/include/c++/13/ostream:230:18: missed: not vectorized: statement can throw an exception: _170 = std::basic_ostream<char>::_M_insert<double> (_167, _169);
+/usr/include/c++/13/ostream:230:18: missed: splitting region at dominance boundary bb95
+/usr/include/c++/13/ostream:230:18: missed: splitting region at control altering definition _174 = std::__ostream_insert<char, std::char_traits<char> > (_170, _171, _173);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_170, "; viento=", 9);
+/usr/include/c++/13/bits/basic_string.h:4037:30: missed: not vectorized: statement can throw an exception: _174 = std::__ostream_insert<char, std::char_traits<char> > (_170, _171, _173);
+/usr/include/c++/13/bits/basic_string.h:4037:30: missed: splitting region at dominance boundary bb99
+/usr/include/c++/13/bits/basic_string.h:4037:30: missed: splitting region at control altering definition _177 = std::basic_ostream<char>::_M_insert<double> (_174, _176);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_174, ":", 1);
+/usr/include/c++/13/ostream:230:18: missed: not vectorized: statement can throw an exception: _177 = std::basic_ostream<char>::_M_insert<double> (_174, _176);
+/usr/include/c++/13/ostream:230:18: missed: splitting region at dominance boundary bb103
+/usr/include/c++/13/ostream:230:18: missed: splitting region at control altering definition _179 = std::basic_ostream<char>::_M_insert<long unsigned int> (_177, _178);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_177, "; foco=(", 8);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _179 = std::basic_ostream<char>::_M_insert<long unsigned int> (_177, _178);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb107
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _181 = std::basic_ostream<char>::_M_insert<long unsigned int> (_179, _180);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_179, ",", 1);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _181 = std::basic_ostream<char>::_M_insert<long unsigned int> (_179, _180);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb111
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _183 = std::basic_ostream<char>::_M_insert<long unsigned int> (_181, execution$steps_415);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_181, ")\n", 2);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_181, "Iteraciones=", 12);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _183 = std::basic_ostream<char>::_M_insert<long unsigned int> (_181, execution$steps_415);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb117
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _185 = std::basic_ostream<char>::_M_insert<long unsigned int> (_183, execution$active_steps_410);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_183, "; con fuego al terminar=", 24);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _185 = std::basic_ostream<char>::_M_insert<long unsigned int> (_183, execution$active_steps_410);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb121
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _187 = std::basic_ostream<char>::_M_insert<double> (_185, SR.124_147);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_185, "; tiempo_bucle_s=", 17);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _187 = std::basic_ostream<char>::_M_insert<double> (_185, SR.124_147);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb125
+/usr/include/c++/13/ostream:223:25: missed: splitting region at control altering definition _189 = std::basic_ostream<char>::_M_insert<long unsigned int> (_187, _188);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_187, "\n", 1);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_187, "Final: vegetaci\xc3\xb3n=", 19);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _189 = std::basic_ostream<char>::_M_insert<long unsigned int> (_187, _188);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb131
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _191 = std::basic_ostream<char>::_M_insert<long unsigned int> (_189, _190);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_189, " fuego=", 7);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _191 = std::basic_ostream<char>::_M_insert<long unsigned int> (_189, _190);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb135
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _193 = std::basic_ostream<char>::_M_insert<long unsigned int> (_191, _192);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_191, " quemado=", 9);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _193 = std::basic_ostream<char>::_M_insert<long unsigned int> (_191, _192);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb139
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _195 = std::basic_ostream<char>::_M_insert<long unsigned int> (_193, _194);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_193, " agua=", 6);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _195 = std::basic_ostream<char>::_M_insert<long unsigned int> (_193, _194);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb143
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _197 = std::basic_ostream<char>::_M_insert<long unsigned int> (_195, _196);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_195, " vac\xc3\xado=", 8);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _197 = std::basic_ostream<char>::_M_insert<long unsigned int> (_195, _196);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb147
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _199 = std::basic_ostream<char>::_M_insert<long unsigned int> (_197, _198);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_197, "; inicial_afectada=", 19);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _199 = std::basic_ostream<char>::_M_insert<long unsigned int> (_197, _198);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb151
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _200 = std::basic_ostream<char>::_M_insert<long unsigned int> (_199, initial_trees_36);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_199, "/", 1);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _200 = std::basic_ostream<char>::_M_insert<long unsigned int> (_199, initial_trees_36);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb155
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _205 = checksum (&current);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_200, "; checksum=", 11);
+main.cpp:90:61: missed: not vectorized: statement can throw an exception: _205 = checksum (&current);
+main.cpp:90:61: missed: splitting region at dominance boundary bb159
+main.cpp:90:61: missed: splitting region at control altering definition _206 = std::basic_ostream<char>::_M_insert<long unsigned int> (_200, _205);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _206 = std::basic_ostream<char>::_M_insert<long unsigned int> (_200, _205);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb161
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _211 = std::basic_ostream<char>::_M_insert<long unsigned int> (_206, 8);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_206, "\n", 1);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_206, "Memoria: cell_bytes=", 20);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _211 = std::basic_ostream<char>::_M_insert<long unsigned int> (_206, 8);
+/usr/include/c++/13/ostream:173:25: missed: splitting region at dominance boundary bb167
+/usr/include/c++/13/ostream:173:25: missed: splitting region at control altering definition _220 = std::basic_ostream<char>::_M_insert<double> (_211, _219);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_211, "; buffers_bytes=", 16);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _220 = std::basic_ostream<char>::_M_insert<double> (_211, _219);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb171
+/usr/include/c++/13/ostream:223:25: missed: splitting region at control altering definition _231 = std::basic_ostream<char>::_M_insert<double> (_220, _230);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_220, "; quemado_pct_total=", 20);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _231 = std::basic_ostream<char>::_M_insert<double> (_220, _230);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb175
+/usr/include/c++/13/ostream:223:25: missed: splitting region at control altering definition _237 = std::basic_ostream<char>::_M_insert<double> (_231, _236);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_231, "; afectado_pct_bosque=", 22);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _237 = std::basic_ostream<char>::_M_insert<double> (_231, _236);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb179
+/usr/include/c++/13/ostream:223:25: missed: splitting region at control altering definition _240 = std::basic_ostream<char>::_M_insert<double> (&cout, execution$32$__r_270);
+main.cpp:94:88: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (_237, "\n");
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cout, "Diagn\xc3\xb3stico: humedad_s=", 24);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _240 = std::basic_ostream<char>::_M_insert<double> (&cout, execution$32$__r_270);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb186
+/usr/include/c++/13/ostream:223:25: missed: splitting region at control altering definition _242 = std::basic_ostream<char>::_M_insert<double> (_240, execution$40$__r_343);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_240, "; fuego_s=", 10);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _242 = std::basic_ostream<char>::_M_insert<double> (_240, execution$40$__r_343);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb190
+/usr/include/c++/13/ostream:223:25: missed: splitting region at control altering definition _250 = std::basic_ostream<char>::_M_insert<double> (_242, _249);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (_242, "; resto_s=", 10);
+/usr/include/c++/13/ostream:223:25: missed: not vectorized: statement can throw an exception: _250 = std::basic_ostream<char>::_M_insert<double> (_242, _249);
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb196
+/usr/include/c++/13/ostream:223:25: missed: splitting region at dominance boundary bb198
+main.cpp:99:106: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (_250, "\n");
+main.cpp:99:106: missed: splitting region at control altering definition _59 = interruption_requested ();
+main.cpp:125:31: missed: not vectorized: statement can throw an exception: _59 = interruption_requested ();
+main.cpp:125:31: missed: splitting region at dominance boundary bb200
+main.cpp:125:31: missed: splitting region at control altering definition _61 = std::basic_ostream<char>::_M_insert<long unsigned int> (&cerr, execution$steps_415);
+main.cpp:130:22: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (&cout, "Fin visual: detenido con q.\n");
+main.cpp:133:22: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (&cout, "Fin visual: fuego extinguido.\n");
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cerr, "Interrumpido tras ", 18);
+/usr/include/c++/13/ostream:173:25: missed: not vectorized: statement can throw an exception: _61 = std::basic_ostream<char>::_M_insert<long unsigned int> (&cerr, execution$steps_415);
+main.cpp:132:24: missed: splitting region at dominance boundary bb205
+main.cpp:132:24: missed: splitting region at dominance boundary bb216
+main.cpp:126:65: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (_61, " iteraciones\n");
+main.cpp:126:65: missed: splitting region at dominance boundary bb219
+main.cpp:136:1: missed: statement clobbers memory: Terminal::~Terminal (&terminal);
+main.cpp:140:5: missed: not vectorized: statement can throw an exception: resx 14
+main.cpp:136:1: missed: splitting region at dominance boundary bb214
+main.cpp:136:1: missed: statement clobbers memory: std::vector<Cell>::~vector (&next);
+main.cpp:140:5: missed: not vectorized: statement can throw an exception: resx 13
+main.cpp:136:1: missed: splitting region at dominance boundary bb249
+main.cpp:136:1: missed: statement clobbers memory: Terminal::~Terminal (&terminal);
+main.cpp:136:1: missed: statement clobbers memory: std::vector<Cell>::~vector (&next);
+main.cpp:136:1: missed: statement clobbers memory: std::vector<Cell>::~vector (&current);
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.78433.direction);
+main.cpp:142:44: missed: splitting region at dominance boundary bb5
+main.cpp:142:44: missed: splitting region at dominance boundary bb222
+/usr/include/c++/13/bits/stl_vector.h:1910:24: missed: not vectorized: statement can throw an exception: std::__throw_length_error ("cannot create std::vector larger than max_size()");
+/usr/include/c++/13/bits/stl_vector.h:1910:24: missed: splitting region at dominance boundary bb226
+main.cpp:136:1: missed: statement clobbers memory: std::vector<Cell>::~vector (&current);
+main.cpp:140:5: missed: not vectorized: statement can throw an exception: resx 12
+main.cpp:136:1: missed: splitting region at dominance boundary bb228
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: statement clobbers memory: std::__cxx11::basic_string<char>::_M_dispose (&D.78433.direction);
+main.cpp:140:5: missed: not vectorized: statement can throw an exception: resx 3
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: splitting region at dominance boundary bb229
+/usr/include/c++/13/bits/basic_string.h:804:19: missed: splitting region at control altering definition _23 = std::operator<< <std::char_traits<char> > (&cerr, _6);
+main.cpp:143:7: missed: statement clobbers memory: _447 = __builtin_eh_filter (1);
+main.cpp:147:36: missed: statement clobbers memory: _3 = __builtin_eh_pointer (1);
+main.cpp:147:36: missed: statement clobbers memory: _20 = __cxa_begin_catch (_3);
+/usr/include/c++/13/ostream:667:18: missed: not vectorized: statement can throw an exception: std::__ostream_insert<char, std::char_traits<char> > (&cerr, "Error: ", 7);
+main.cpp:148:51: missed: statement clobbers memory: _6 = OBJ_TYPE_REF(_5;_20->2B) (_20);
+main.cpp:148:51: missed: not vectorized: statement can throw an exception: _23 = std::operator<< <std::char_traits<char> > (&cerr, _6);
+main.cpp:148:51: missed: splitting region at dominance boundary bb236
+main.cpp:148:51: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (_23, ". Usa --help.\n");
+main.cpp:148:51: missed: splitting region at dominance boundary bb242
+main.cpp:148:51: missed: splitting region at dominance boundary bb233
+main.cpp:149:5: missed: statement clobbers memory: __cxa_end_catch ();
+main.cpp:149:5: missed: splitting region at dominance boundary bb231
+main.cpp:145:37: missed: statement clobbers memory: _2 = __builtin_eh_pointer (1);
+main.cpp:145:37: missed: statement clobbers memory: __cxa_begin_catch (_2);
+main.cpp:146:22: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (&cerr, "Error: dimensiones demasiado grandes para reservar memoria\n");
+main.cpp:147:5: missed: statement clobbers memory: __cxa_end_catch ();
+main.cpp:147:5: missed: splitting region at dominance boundary bb232
+main.cpp:143:34: missed: statement clobbers memory: _1 = __builtin_eh_pointer (1);
+main.cpp:143:34: missed: statement clobbers memory: __cxa_begin_catch (_1);
+main.cpp:144:22: missed: not vectorized: statement can throw an exception: std::operator<< <std::char_traits<char> > (&cerr, "Error: memoria insuficiente\n");
+main.cpp:144:22: missed: splitting region at dominance boundary bb224
+main.cpp:145:5: missed: statement clobbers memory: __cxa_end_catch ();
+main.cpp:145:5: missed: splitting region at dominance boundary bb239
+main.cpp:145:5: missed: statement clobbers memory: __cxa_end_catch ();

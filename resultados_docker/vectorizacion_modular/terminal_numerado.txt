@@ -1,0 +1,275 @@
+     1	#include "terminal.h"
+     2	#include "estadisticas.h"
+     3	
+     4	#include <algorithm>
+     5	#include <chrono>
+     6	#include <csignal>
+     7	#include <iostream>
+     8	#include <sstream>
+     9	#include <string>
+    10	#include <thread>
+    11	#include <sys/ioctl.h>
+    12	#include <unistd.h>
+    13	
+    14	namespace {
+    15	
+    16	volatile std::sig_atomic_t interrupted = 0;
+    17	
+    18	void on_signal(int) {
+    19	    // El manejador solo modifica una bandera segura para señales. La salida
+    20	    // y la restauración de la terminal se realizan después, en el flujo normal.
+    21	    interrupted = 1;
+    22	}
+    23	
+    24	std::string percent(std::size_t count, std::size_t total) {
+    25	    return std::to_string((100 * count) / total) + "%";
+    26	}
+    27	
+    28	std::string glyph(const Cell& cell, bool ascii, bool color) {
+    29	    const char* ascii_symbols[] = {". ", "T ", "* ", "# ", "~ "};
+    30	    const char* unicode_symbols[] = {"· ", "♣ ", "▓ ", "░ ", "≈ "};
+    31	    const char* colors[] = {"\033[37m", "\033[32m", "\033[33;1m", "\033[90m", "\033[34;1m"};
+    32	    std::string symbol = ascii ? ascii_symbols[cell.state] : unicode_symbols[cell.state];
+    33	    if (color) {
+    34	        return std::string(colors[cell.state]) + symbol + "\033[0m";
+    35	    }
+    36	    return symbol;
+    37	}
+    38	
+    39	std::string wind_arrow(const Options& options) {
+    40	    if (options.ascii) {
+    41	        return options.direction;
+    42	    }
+    43	    const std::string directions[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+    44	    const std::string arrows[] = {"↑", "↗", "→", "↘", "↓", "↙", "←", "↖"};
+    45	    for (int i = 0; i < 8; ++i) {
+    46	        if (options.direction == directions[i]) {
+    47	            return arrows[i];
+    48	        }
+    49	    }
+    50	    return "";
+    51	}
+    52	
+    53	std::vector<std::string> information_panel(const Grid& cells, const Options& options,
+    54	                                         const Playback& playback, std::size_t step,
+    55	                                         std::size_t initial_trees) {
+    56	    Stats stats = statistics(cells, initial_trees);
+    57	    std::size_t filled = 10 * stats.affected / initial_trees;
+    58	    std::string bar = "[";
+    59	    for (std::size_t i = 0; i < 10; ++i) {
+    60	        bar += i < filled ? (options.ascii ? "#" : "█") : (options.ascii ? "-" : "░");
+    61	    }
+    62	    bar += "]";
+    63	
+    64	    std::vector<std::string> information = {
+    65	        "Paso " + std::to_string(step) + " / " + std::to_string(options.steps),
+    66	        "Viento " + wind_arrow(options) + (options.ascii ? "" : " " + options.direction) + "  " + std::to_string(options.wind),
+    67	        "Humedad media: " + (stats.count[TREE] ? std::to_string(stats.mean) : std::string("no aplica")),
+    68	        "Estados / total " + std::to_string(cells.size()),
+    69	        "Vegetación " + std::to_string(stats.count[TREE]) + " (" + percent(stats.count[TREE], cells.size()) + ")",
+    70	        "Ardiendo   " + std::to_string(stats.count[FIRE]) + " (" + percent(stats.count[FIRE], cells.size()) + ")",
+    71	        "Quemado    " + std::to_string(stats.count[BURNT]) + " (" + percent(stats.count[BURNT], cells.size()) + ")",
+    72	        "Agua " + std::to_string(stats.count[WATER]) + " (" + percent(stats.count[WATER], cells.size()) + ")  Vacío " + std::to_string(stats.count[EMPTY]) + " (" + percent(stats.count[EMPTY], cells.size()) + ")",
+    73	        "Inicial afectada: " + std::to_string(stats.affected) + "/" + std::to_string(initial_trees) + " (" + percent(stats.affected, initial_trees) + ")",
+    74	        bar + " del bosque inicial",
+    75	        "T vegetación  * fuego",
+    76	        "# quemado  ~ agua  . vacío"
+    77	    };
+    78	    if (playback.keyboard) {
+    79	        information.push_back(std::to_string(playback.delay) + " ms " +
+    80	                              (playback.paused ? "[PAUSA] " : "") + "+/- rapidez");
+    81	        information.push_back("espacio pausa  n paso  q salir");
+    82	    }
+    83	    return information;
+    84	}
+    85	
+    86	}  // namespace
+    87	
+    88	Terminal::Terminal(bool visual) : output_is_terminal_(isatty(STDOUT_FILENO)) {
+    89	    if (!visual || !output_is_terminal_ || !isatty(STDIN_FILENO) ||
+    90	        tcgetattr(STDIN_FILENO, &saved_input_)) {
+    91	        return;
+    92	    }
+    93	
+    94	    // Entrada no canónica: leer teclas sin esperar Intro y sin mostrarlas en pantalla.
+    95	    termios mode = saved_input_;
+    96	    mode.c_lflag &= static_cast<tcflag_t>(~(ICANON | ECHO));
+    97	    mode.c_cc[VMIN] = 0;
+    98	    mode.c_cc[VTIME] = 0;
+    99	    input_enabled_ = tcsetattr(STDIN_FILENO, TCSANOW, &mode) == 0;
+   100	}
+   101	
+   102	Terminal::~Terminal() {
+   103	    if (input_enabled_) {
+   104	        tcsetattr(STDIN_FILENO, TCSANOW, &saved_input_);
+   105	    }
+   106	    restore_cursor();
+   107	}
+   108	
+   109	bool Terminal::output_is_terminal() const {
+   110	    return output_is_terminal_;
+   111	}
+   112	
+   113	bool Terminal::input_enabled() const {
+   114	    return input_enabled_;
+   115	}
+   116	
+   117	void Terminal::begin_display() {
+   118	    if (output_is_terminal_) {
+   119	        std::cout << "\033[2J\033[H\033[?25l";
+   120	        cursor_hidden_ = true;
+   121	    }
+   122	}
+   123	
+   124	void Terminal::restore_cursor() {
+   125	    if (cursor_hidden_) {
+   126	        std::cout << "\033[?25h";
+   127	        cursor_hidden_ = false;
+   128	    }
+   129	}
+   130	
+   131	void install_signal_handlers() {
+   132	    std::signal(SIGINT, on_signal);
+   133	    std::signal(SIGTERM, on_signal);
+   134	}
+   135	
+   136	bool interruption_requested() {
+   137	    return interrupted != 0;
+   138	}
+   139	
+   140	void draw(const Grid& cells, const Options& options, const Playback& playback,
+   141	          std::size_t step, std::size_t initial_trees, bool tty) {
+   142	    winsize window{};
+   143	    if (tty) {
+   144	        ioctl(STDOUT_FILENO, TIOCGWINSZ, &window);
+   145	    }
+   146	    std::size_t width = window.ws_col ? window.ws_col : 100;
+   147	    std::size_t height = window.ws_row ? window.ws_row : 40;
+   148	    bool side_panel = width >= 2 * std::min(options.cols, std::size_t(35)) + 52;
+   149	    std::size_t shown_columns = std::min(
+   150	        options.cols, std::max(std::size_t(1), (width - (side_panel ? 52 : 4)) / 2));
+   151	    std::size_t shown_rows = std::min(
+   152	        options.rows, std::max(std::size_t(1), height - (side_panel ? 5 : (playback.keyboard ? 18 : 17))));
+   153	    std::size_t first_row = options.fire_row > shown_rows / 2
+   154	        ? std::min(options.fire_row - shown_rows / 2, options.rows - shown_rows) : 0;
+   155	    std::size_t first_column = options.fire_col > shown_columns / 2
+   156	        ? std::min(options.fire_col - shown_columns / 2, options.cols - shown_columns) : 0;
+   157	    auto information = information_panel(cells, options, playback, step, initial_trees);
+   158	
+   159	    std::string top_left = options.ascii ? "+" : "╭";
+   160	    std::string top_right = options.ascii ? "+" : "╮";
+   161	    std::string bottom_left = options.ascii ? "+" : "╰";
+   162	    std::string bottom_right = options.ascii ? "+" : "╯";
+   163	    std::string horizontal = options.ascii ? "-" : "─";
+   164	    std::string vertical = options.ascii ? "|" : "│";
+   165	
+   166	    // Componer primero el fotograma evita mezclar escrituras pequeñas con el cálculo.
+   167	    std::ostringstream frame;
+   168	    frame << top_left;
+   169	    for (std::size_t column = 0; column < shown_columns * 2; ++column) {
+   170	        frame << horizontal;
+   171	    }
+   172	    frame << top_right;
+   173	    if (side_panel) {
+   174	        frame << "  Incendio forestal";
+   175	    }
+   176	    frame << '\n';
+   177	    for (std::size_t row = 0; row < shown_rows; ++row) {
+   178	        frame << vertical;
+   179	        for (std::size_t column = 0; column < shown_columns; ++column) {
+   180	            frame << glyph(cells[index(row + first_row, column + first_column, options.cols)],
+   181	                           options.ascii, options.color && tty);
+   182	        }
+   183	        frame << vertical;
+   184	        if (side_panel && row < information.size()) {
+   185	            frame << "  " << information[row];
+   186	        }
+   187	        frame << '\n';
+   188	    }
+   189	    frame << bottom_left;
+   190	    for (std::size_t column = 0; column < shown_columns * 2; ++column) {
+   191	        frame << horizontal;
+   192	    }
+   193	    frame << bottom_right << '\n';
+   194	    if (first_row || first_column || shown_rows < options.rows || shown_columns < options.cols) {
+   195	        if (tty && width < 60) {
+   196	            frame << "Vista: f" << first_row << "-" << first_row + shown_rows - 1
+   197	                  << " c" << first_column << "-" << first_column + shown_columns - 1 << '\n';
+   198	        } else {
+   199	            frame << "Vista recortada: filas " << first_row << ".." << first_row + shown_rows - 1
+   200	                  << ", columnas " << first_column << ".." << first_column + shown_columns - 1 << "\n";
+   201	        }
+   202	    }
+   203	    if (!side_panel) {
+   204	        for (const auto& line : information) {
+   205	            frame << line << '\n';
+   206	        }
+   207	    } else {
+   208	        for (std::size_t i = shown_rows; i < information.size(); ++i) {
+   209	            frame << information[i] << '\n';
+   210	        }
+   211	    }
+   212	
+   213	    if (tty) {
+   214	        std::cout << "\033[H";
+   215	        for (char character : frame.str()) {
+   216	            if (character == '\n') {
+   217	                std::cout << "\033[K\n";
+   218	            } else {
+   219	                std::cout << character;
+   220	            }
+   221	        }
+   222	        // Borrar también lo que sobra cuando un panel se vuelve más corto.
+   223	        std::cout << "\033[J";
+   224	    } else {
+   225	        std::cout << frame.str();
+   226	    }
+   227	    std::cout.flush();
+   228	}
+   229	
+   230	bool wait_frame(Playback& playback, const Terminal& terminal, const Grid& cells,
+   231	                const Options& options, std::size_t step, std::size_t initial_trees) {
+   232	    if (!terminal.input_enabled()) {
+   233	        if (playback.delay) {
+   234	            std::this_thread::sleep_for(std::chrono::milliseconds(playback.delay));
+   235	        }
+   236	        return !interruption_requested();
+   237	    }
+   238	
+   239	    auto deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(playback.delay);
+   240	    while (!interruption_requested()) {
+   241	        char key;
+   242	        bool changed = false;
+   243	        while (read(STDIN_FILENO, &key, 1) == 1) {
+   244	            if (key == 'q' || key == 'Q') {
+   245	                return false;
+   246	            }
+   247	            if (key == ' ') {
+   248	                playback.paused = !playback.paused;
+   249	                changed = true;
+   250	                deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(playback.delay);
+   251	            }
+   252	            if ((key == 'n' || key == 'N') && playback.paused) {
+   253	                return true;
+   254	            }
+   255	            if (key == '+') {
+   256	                playback.delay = playback.delay > 50 ? playback.delay - 50 : 0;
+   257	                changed = true;
+   258	                deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(playback.delay);
+   259	            }
+   260	            if (key == '-') {
+   261	                playback.delay = std::min(60000u, playback.delay + 50);
+   262	                changed = true;
+   263	                deadline = std::chrono::steady_clock::now() + std::chrono::milliseconds(playback.delay);
+   264	            }
+   265	        }
+   266	        if (changed) {
+   267	            draw(cells, options, playback, step, initial_trees, true);
+   268	        }
+   269	        if (!playback.paused && std::chrono::steady_clock::now() >= deadline) {
+   270	            return true;
+   271	        }
+   272	        std::this_thread::sleep_for(std::chrono::milliseconds(15));
+   273	    }
+   274	    return false;
+   275	}

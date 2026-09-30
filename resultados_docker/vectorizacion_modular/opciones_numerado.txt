@@ -1,0 +1,167 @@
+     1	#include "opciones.h"
+     2	#include "modelo.h"
+     3	
+     4	#include <cmath>
+     5	#include <cstdlib>
+     6	#include <exception>
+     7	#include <iostream>
+     8	#include <stdexcept>
+     9	
+    10	namespace {
+    11	
+    12	std::size_t parse_integer(const std::string& text, const std::string& option) {
+    13	    if (text.empty() || text[0] == '-') {
+    14	        throw std::invalid_argument("Valor inválido para " + option);
+    15	    }
+    16	
+    17	    try {
+    18	        std::size_t consumed = 0;
+    19	        unsigned long long value = std::stoull(text, &consumed);
+    20	        if (consumed != text.size() || value > std::numeric_limits<std::size_t>::max()) {
+    21	            throw std::invalid_argument("");
+    22	        }
+    23	        return static_cast<std::size_t>(value);
+    24	    } catch (const std::exception&) {
+    25	        throw std::invalid_argument("Valor inválido para " + option);
+    26	    }
+    27	}
+    28	
+    29	float parse_decimal(const std::string& text, const std::string& option) {
+    30	    try {
+    31	        std::size_t consumed = 0;
+    32	        float value = std::stof(text, &consumed);
+    33	        if (consumed != text.size() || !std::isfinite(value)) {
+    34	            throw std::invalid_argument("");
+    35	        }
+    36	        return value;
+    37	    } catch (const std::exception&) {
+    38	        throw std::invalid_argument("Valor inválido para " + option);
+    39	    }
+    40	}
+    41	
+    42	void print_help() {
+    43	    std::cout << "Incendio secuencial C++17. Coordenadas de base 0.\n"
+    44	              << "--rows N --cols N --steps N --seed N --moisture X [0,1]\n"
+    45	              << "--wind-dir N|NE|E|SE|S|SW|W|NW --wind X [0,1]\n"
+    46	              << "--fire-row N --fire-col N --visual|--measure|--profile --delay MS --ascii --no-color\n"
+    47	              << "--profile: diagnóstico de tiempos por fase, separado de la medición habitual.\n"
+    48	              << "En modo visual: + acelera, - frena, espacio pausa, n avanza un paso, q termina.\n"
+    49	              << "Por defecto: 30x60, 80 pasos, semilla 42, humedad .28, viento E .6, foco (filas/2,columnas/5), medición; pausa visual 180 ms.\n";
+    50	}
+    51	
+    52	void set_wind_direction(Options& options, const std::string& direction) {
+    53	    const std::string directions[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
+    54	    const int horizontal[] = {0, 1, 1, 1, 0, -1, -1, -1};
+    55	    const int vertical[] = {-1, -1, 0, 1, 1, 1, 0, -1};
+    56	
+    57	    for (int i = 0; i < 8; ++i) {
+    58	        if (direction == directions[i]) {
+    59	            options.direction = direction;
+    60	            options.dx = horizontal[i];
+    61	            options.dy = vertical[i];
+    62	            return;
+    63	        }
+    64	    }
+    65	    throw std::invalid_argument("Dirección de viento: N, NE, E, SE, S, SW, W o NW");
+    66	}
+    67	
+    68	void validate_options(Options& options) {
+    69	    if (options.profile && options.visual) {
+    70	        throw std::invalid_argument("--profile no se combina con --visual");
+    71	    }
+    72	    if (!options.rows || !options.cols || !options.steps) {
+    73	        throw std::invalid_argument("Filas, columnas e iteraciones deben ser positivas");
+    74	    }
+    75	
+    76	    // Comprobar antes de multiplicar evita desbordar el tamaño de la cuadrícula.
+    77	    if (options.rows > std::numeric_limits<std::size_t>::max() / options.cols ||
+    78	        options.rows * options.cols > std::numeric_limits<Grid::difference_type>::max() / 2) {
+    79	        throw std::invalid_argument("Dimensiones demasiado grandes");
+    80	    }
+    81	    if (options.moisture < 0 || options.moisture > 1 || options.wind < 0 || options.wind > 1) {
+    82	        throw std::invalid_argument("Humedad y viento deben estar en [0,1]");
+    83	    }
+    84	
+    85	    if (options.fire_row == std::numeric_limits<std::size_t>::max()) {
+    86	        options.fire_row = options.rows / 2;
+    87	    }
+    88	    if (options.fire_col == std::numeric_limits<std::size_t>::max()) {
+    89	        options.fire_col = options.cols / 5;
+    90	    }
+    91	    if (options.fire_row >= options.rows || options.fire_col >= options.cols) {
+    92	        throw std::invalid_argument("Foco fuera del terreno (coordenadas desde 0)");
+    93	    }
+    94	}
+    95	
+    96	}  // namespace
+    97	
+    98	Options parse_options(int argc, char** argv) {
+    99	    Options options;
+   100	    for (int i = 1; i < argc; ++i) {
+   101	        std::string argument = argv[i];
+   102	        if (argument == "--help") {
+   103	            print_help();
+   104	            std::exit(0);
+   105	        }
+   106	        if (argument == "--visual") {
+   107	            options.visual = true;
+   108	            continue;
+   109	        }
+   110	        if (argument == "--measure") {
+   111	            options.visual = false;
+   112	            continue;
+   113	        }
+   114	        if (argument == "--profile") {
+   115	            options.profile = true;
+   116	            continue;
+   117	        }
+   118	        if (argument == "--ascii") {
+   119	            options.ascii = true;
+   120	            continue;
+   121	        }
+   122	        if (argument == "--no-color") {
+   123	            options.color = false;
+   124	            continue;
+   125	        }
+   126	        if (i + 1 >= argc) {
+   127	            throw std::invalid_argument("Falta valor para " + argument);
+   128	        }
+   129	
+   130	        std::string value = argv[++i];
+   131	        if (argument == "--rows") {
+   132	            options.rows = parse_integer(value, argument);
+   133	        } else if (argument == "--cols") {
+   134	            options.cols = parse_integer(value, argument);
+   135	        } else if (argument == "--steps") {
+   136	            options.steps = parse_integer(value, argument);
+   137	        } else if (argument == "--seed") {
+   138	            auto seed = parse_integer(value, argument);
+   139	            if (seed > UINT32_MAX) {
+   140	                throw std::invalid_argument("Semilla fuera de rango");
+   141	            }
+   142	            options.seed = static_cast<std::uint32_t>(seed);
+   143	        } else if (argument == "--moisture") {
+   144	            options.moisture = parse_decimal(value, argument);
+   145	        } else if (argument == "--wind") {
+   146	            options.wind = parse_decimal(value, argument);
+   147	        } else if (argument == "--fire-row") {
+   148	            options.fire_row = parse_integer(value, argument);
+   149	            options.fire_set = true;
+   150	        } else if (argument == "--fire-col") {
+   151	            options.fire_col = parse_integer(value, argument);
+   152	            options.fire_set = true;
+   153	        } else if (argument == "--delay") {
+   154	            auto delay = parse_integer(value, argument);
+   155	            if (delay > 60000) {
+   156	                throw std::invalid_argument("--delay debe estar en [0,60000]");
+   157	            }
+   158	            options.delay = static_cast<unsigned>(delay);
+   159	        } else if (argument == "--wind-dir") {
+   160	            set_wind_direction(options, value);
+   161	        } else {
+   162	            throw std::invalid_argument("Opción desconocida: " + argument);
+   163	        }
+   164	    }
+   165	    validate_options(options);
+   166	    return options;
+   167	}

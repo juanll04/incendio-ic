@@ -1,0 +1,7 @@
+/incendio
+.DS_Store
+__pycache__/
+*.pyc
+*.o
+*.dSYM/
+/tmp/

@@ -1,0 +1,151 @@
+     1	#include "estadisticas.h"
+     2	#include "opciones.h"
+     3	#include "simulacion.h"
+     4	#include "terminal.h"
+     5	
+     6	#include <algorithm>
+     7	#include <chrono>
+     8	#include <exception>
+     9	#include <iomanip>
+    10	#include <iostream>
+    11	#include <new>
+    12	#include <stdexcept>
+    13	
+    14	namespace {
+    15	
+    16	using Clock = std::chrono::steady_clock;
+    17	using Seconds = std::chrono::duration<double>;
+    18	
+    19	struct Execution {
+    20	    std::size_t steps = 0;
+    21	    std::size_t active_steps = 0;
+    22	    bool stopped_with_key = false;
+    23	    Seconds total{0};
+    24	    Seconds moisture{0};
+    25	    Seconds fire{0};
+    26	};
+    27	
+    28	Execution execute_steps(Grid& current, Grid& next, const Options& options,
+    29	                        Terminal& terminal, Playback& playback, std::size_t initial_trees) {
+    30	    Execution execution;
+    31	    Seconds visual_work{0};
+    32	    auto start = Clock::now();
+    33	
+    34	    for (std::size_t step = 0; step < options.steps && !interruption_requested(); ++step) {
+    35	        if (options.visual && terminal.output_is_terminal() &&
+    36	            !wait_frame(playback, terminal, current, options, execution.steps, initial_trees)) {
+    37	            execution.stopped_with_key = !interruption_requested();
+    38	            break;
+    39	        }
+    40	
+    41	        // En medición habitual solo se lee el reloj al empezar y terminar el bucle.
+    42	        auto work_start = (options.visual || options.profile) ? Clock::now() : Clock::time_point{};
+    43	        update_moisture(current, next, options.rows, options.cols);
+    44	        auto moisture_end = options.profile ? Clock::now() : Clock::time_point{};
+    45	        std::size_t active_cells = update_fire(current, next, options);
+    46	        if (options.profile) {
+    47	            auto fire_end = Clock::now();
+    48	            execution.moisture += moisture_end - work_start;
+    49	            execution.fire += fire_end - moisture_end;
+    50	        }
+    51	
+    52	        // Solo tras completar ambas fases el resultado pasa a ser el estado actual.
+    53	        current.swap(next);
+    54	        if (options.visual) {
+    55	            visual_work += Clock::now() - work_start;
+    56	        }
+    57	        ++execution.steps;
+    58	        if (active_cells) {
+    59	            ++execution.active_steps;
+    60	        }
+    61	
+    62	        if (options.visual) {
+    63	            if (terminal.output_is_terminal() || step + 1 == options.steps || !active_cells) {
+    64	                draw(current, options, playback, execution.steps, initial_trees,
+    65	                     terminal.output_is_terminal());
+    66	            }
+    67	            if (!active_cells) {
+    68	                break;
+    69	            }
+    70	        }
+    71	    }
+    72	
+    73	    auto end = Clock::now();
+    74	    execution.total = options.visual ? visual_work : Seconds(end - start);
+    75	    return execution;
+    76	}
+    77	
+    78	void print_summary(const Grid& cells, const Options& options, const Stats& stats,
+    79	                   const Execution& execution, std::size_t initial_trees) {
+    80	    std::cout << std::fixed << std::setprecision(6)
+    81	              << "Resumen: " << options.rows << "x" << options.cols << "=" << cells.size()
+    82	              << " celdas; semilla=" << options.seed
+    83	              << "; humedad=" << options.moisture << "; viento=" << options.direction << ":" << options.wind
+    84	              << "; foco=(" << options.fire_row << "," << options.fire_col << ")\n"
+    85	              << "Iteraciones=" << execution.steps << "; con fuego al terminar=" << execution.active_steps
+    86	              << "; tiempo_bucle_s=" << execution.total.count() << "\n"
+    87	              << "Final: vegetación=" << stats.count[TREE] << " fuego=" << stats.count[FIRE]
+    88	              << " quemado=" << stats.count[BURNT] << " agua=" << stats.count[WATER]
+    89	              << " vacío=" << stats.count[EMPTY] << "; inicial_afectada=" << stats.affected << "/" << initial_trees
+    90	              << "; checksum=" << std::hex << checksum(cells) << std::dec << "\n"
+    91	              << "Memoria: cell_bytes=" << sizeof(Cell)
+    92	              << "; buffers_bytes=" << 2.0 * cells.size() * sizeof(Cell)
+    93	              << "; quemado_pct_total=" << 100.0 * stats.count[BURNT] / cells.size()
+    94	              << "; afectado_pct_bosque=" << 100.0 * stats.affected / initial_trees << "\n";
+    95	    if (options.profile) {
+    96	        std::cout << "Diagnóstico: humedad_s=" << execution.moisture.count()
+    97	                  << "; fuego_s=" << execution.fire.count()
+    98	                  << "; resto_s=" << std::max(0.0, execution.total.count() -
+    99	                                                 execution.moisture.count() - execution.fire.count()) << "\n";
+   100	    }
+   101	}
+   102	
+   103	int run_simulation(const Options& options) {
+   104	    Grid current = initialize(options);
+   105	    Grid next(current.size());
+   106	    // initialize ya ha encendido el foco: también pertenecía al bosque inicial.
+   107	    std::size_t initial_trees = 1;
+   108	    for (const Cell& cell : current) {
+   109	        initial_trees += cell.state == TREE;
+   110	    }
+   111	
+   112	    Terminal terminal(options.visual);
+   113	    Playback playback{options.delay, terminal.input_enabled(), false};
+   114	    install_signal_handlers();
+   115	    if (options.visual) {
+   116	        terminal.begin_display();
+   117	        draw(current, options, playback, 0, initial_trees, terminal.output_is_terminal());
+   118	    }
+   119	
+   120	    Execution execution = execute_steps(current, next, options, terminal, playback, initial_trees);
+   121	    terminal.restore_cursor();
+   122	    Stats stats = statistics(current, initial_trees);
+   123	    print_summary(current, options, stats, execution, initial_trees);
+   124	
+   125	    if (interruption_requested()) {
+   126	        std::cerr << "Interrumpido tras " << execution.steps << " iteraciones\n";
+   127	        return 130;
+   128	    }
+   129	    if (execution.stopped_with_key) {
+   130	        std::cout << "Fin visual: detenido con q.\n";
+   131	    }
+   132	    if (options.visual && !stats.count[FIRE]) {
+   133	        std::cout << "Fin visual: fuego extinguido.\n";
+   134	    }
+   135	    return 0;
+   136	}
+   137	
+   138	}  // namespace
+   139	
+   140	int main(int argc, char** argv) {
+   141	    try {
+   142	        return run_simulation(parse_options(argc, argv));
+   143	    } catch (const std::bad_alloc&) {
+   144	        std::cerr << "Error: memoria insuficiente\n";
+   145	    } catch (const std::length_error&) {
+   146	        std::cerr << "Error: dimensiones demasiado grandes para reservar memoria\n";
+   147	    } catch (const std::exception& error) {
+   148	        std::cerr << "Error: " << error.what() << ". Usa --help.\n";
+   149	    }
+   150	    return 1;
+   151	}

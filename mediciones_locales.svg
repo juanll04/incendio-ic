@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font:14px sans-serif} .axis{stroke:#333;stroke-width:1.5} .line{fill:none;stroke:#c43;stroke-width:2.5}</style>
+<text x="70" y="30">Tamaño, 160 iteraciones</text>
+<path class="axis" d="M70 220V45 M70 220H700"/>
+<text x="12" y="55">s</text>
+<text x="630" y="250">lado (celdas)</text>
+<circle cx="100" cy="185.9" r="5" fill="#c43"/>
+<text x="81" y="176.9">1.09 s</text>
+<text x="80" y="239">800</text>
+<circle cx="360" cy="80.9" r="5" fill="#c43"/>
+<text x="341" y="71.9">4.46 s</text>
+<text x="340" y="239">1600</text>
+<polyline class="line" points="100,185.9 360,80.9"/>
+<text x="70" y="285">Iteraciones, 1600 × 1600</text>
+<path class="axis" d="M70 475V300 M70 475H700"/>
+<text x="12" y="310">s</text>
+<text x="630" y="505">iteraciones</text>
+<circle cx="100" cy="404.5" r="5" fill="#c43"/>
+<text x="81" y="395.5">2.26 s</text>
+<text x="80" y="494">80</text>
+<circle cx="360" cy="335.9" r="5" fill="#c43"/>
+<text x="341" y="326.9">4.46 s</text>
+<text x="340" y="494">160</text>
+<polyline class="line" points="100,404.5 360,335.9"/>
+</svg>

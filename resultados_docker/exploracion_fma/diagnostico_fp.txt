@@ -1,0 +1,4 @@
+Resumen: 1600x1600=2560000 celdas; semilla=42; humedad=0.280000; viento=E:0.600000; foco=(800,320)
+Iteraciones=160; con fuego al terminar=160; tiempo_bucle_s=7.419423
+Final: vegetación=2067845 fuego=3718 quemado=62753 agua=135124 vacío=290560; inicial_afectada=66471/2134316; checksum=94c0ea22a6a1fb35
+Memoria: cell_bytes=8; buffers_bytes=40960000.000000; quemado_pct_total=2.451289; afectado_pct_bosque=3.114394

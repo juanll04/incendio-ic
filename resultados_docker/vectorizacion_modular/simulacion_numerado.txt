@@ -1,0 +1,132 @@
+     1	#include "simulacion.h"
+     2	
+     3	#include <algorithm>
+     4	#include <cmath>
+     5	#include <random>
+     6	#include <stdexcept>
+     7	
+     8	Grid initialize(const Options& options) {
+     9	    Grid cells(options.rows * options.cols);
+    10	    std::mt19937 generator(options.seed);
+    11	    std::uniform_real_distribution<float> random_value(0, 1);
+    12	
+    13	    for (std::size_t row = 0; row < options.rows; ++row) {
+    14	        for (std::size_t column = 0; column < options.cols; ++column) {
+    15	            float x = (static_cast<float>(column) + 0.5f) / options.cols;
+    16	            float y = (static_cast<float>(row) + 0.5f) / options.rows;
+    17	            bool lake = std::pow((x - 0.72f) / 0.105f, 2) +
+    18	                        std::pow((y - 0.55f) / 0.16f, 2) < 1;
+    19	
+    20	            // Mantener el orden de estas extracciones conserva el terreno de cada semilla.
+    21	            float terrain_random = random_value(generator);
+    22	            float moisture_random = random_value(generator);
+    23	            Cell& cell = cells[index(row, column, options.cols)];
+    24	            cell.state = lake ? WATER : (terrain_random < 0.12f ? EMPTY : TREE);
+    25	            cell.fuel = cell.state == TREE
+    26	                ? static_cast<std::uint8_t>(3 + static_cast<int>(random_value(generator) * 4))
+    27	                : 0;
+    28	            cell.moisture = cell.state == TREE
+    29	                ? std::clamp(options.moisture + (moisture_random - 0.5f) * 0.16f, 0.f, 1.f)
+    30	                : 0;
+    31	        }
+    32	    }
+    33	
+    34	    Cell& focus = cells[index(options.fire_row, options.fire_col, options.cols)];
+    35	    if (!options.fire_set && focus.state != WATER) {
+    36	        focus.state = TREE;
+    37	        focus.fuel = 5;
+    38	        focus.moisture = options.moisture;
+    39	    }
+    40	    if (focus.state != TREE || !focus.fuel) {
+    41	        throw std::invalid_argument("El foco cae sobre agua o un claro: elige otra celda con vegetación");
+    42	    }
+    43	    focus.state = FIRE;
+    44	    return cells;
+    45	}
+    46	
+    47	void update_moisture(const Grid& current, Grid& next,
+    48	                     std::size_t rows, std::size_t columns) {
+    49	    for (std::size_t row = 0; row < rows; ++row) {
+    50	        for (std::size_t column = 0; column < columns; ++column) {
+    51	            std::size_t position = index(row, column, columns);
+    52	            if (current[position].state != TREE && current[position].state != FIRE) {
+    53	                next[position].moisture = current[position].moisture;
+    54	                continue;
+    55	            }
+    56	
+    57	            int burning_neighbors = 0;
+    58	            for (int row_offset = -1; row_offset <= 1; ++row_offset) {
+    59	                for (int column_offset = -1; column_offset <= 1; ++column_offset) {
+    60	                    if (row_offset == 0 && column_offset == 0) {
+    61	                        continue;
+    62	                    }
+    63	                    // Las coordenadas temporales son con signo: en el borde pueden ser -1.
+    64	                    auto neighbor_row = static_cast<long long>(row) + row_offset;
+    65	                    auto neighbor_column = static_cast<long long>(column) + column_offset;
+    66	                    if (neighbor_row >= 0 && neighbor_column >= 0 &&
+    67	                        static_cast<std::size_t>(neighbor_row) < rows &&
+    68	                        static_cast<std::size_t>(neighbor_column) < columns) {
+    69	                        std::size_t neighbor = index(static_cast<std::size_t>(neighbor_row),
+    70	                                                     static_cast<std::size_t>(neighbor_column), columns);
+    71	                        burning_neighbors += current[neighbor].state == FIRE;
+    72	                    }
+    73	                }
+    74	            }
+    75	            next[position].moisture = std::max(
+    76	                0.f, current[position].moisture - 0.006f - 0.012f * burning_neighbors);
+    77	        }
+    78	    }
+    79	}
+    80	
+    81	std::size_t update_fire(const Grid& current, Grid& next, const Options& options) {
+    82	    std::size_t active_cells = 0;
+    83	    for (std::size_t row = 0; row < options.rows; ++row) {
+    84	        for (std::size_t column = 0; column < options.cols; ++column) {
+    85	            std::size_t position = index(row, column, options.cols);
+    86	            const Cell& current_cell = current[position];
+    87	            Cell& next_cell = next[position];
+    88	            next_cell.state = current_cell.state;
+    89	            next_cell.fuel = current_cell.fuel;
+    90	
+    91	            if (current_cell.state == FIRE) {
+    92	                next_cell.fuel = static_cast<std::uint8_t>(current_cell.fuel - 1);
+    93	                if (!next_cell.fuel) {
+    94	                    next_cell.state = BURNT;
+    95	                }
+    96	            } else if (current_cell.state == TREE) {
+    97	                float influence = 0;
+    98	                for (int row_offset = -1; row_offset <= 1; ++row_offset) {
+    99	                    for (int column_offset = -1; column_offset <= 1; ++column_offset) {
+   100	                        if (row_offset == 0 && column_offset == 0) {
+   101	                            continue;
+   102	                        }
+   103	                        auto neighbor_row = static_cast<long long>(row) + row_offset;
+   104	                        auto neighbor_column = static_cast<long long>(column) + column_offset;
+   105	                        if (neighbor_row < 0 || neighbor_column < 0 ||
+   106	                            static_cast<std::size_t>(neighbor_row) >= options.rows ||
+   107	                            static_cast<std::size_t>(neighbor_column) >= options.cols) {
+   108	                            continue;
+   109	                        }
+   110	                        std::size_t neighbor = index(static_cast<std::size_t>(neighbor_row),
+   111	                                                     static_cast<std::size_t>(neighbor_column), options.cols);
+   112	                        if (current[neighbor].state != FIRE) {
+   113	                            continue;
+   114	                        }
+   115	
+   116	                        float distance_weight = (row_offset && column_offset) ? 0.70710678f : 1.f;
+   117	                        // Los offsets apuntan a la fuente; su negativo apunta del fuego al destino.
+   118	                        float alignment = (-column_offset * options.dx - row_offset * options.dy) *
+   119	                                          distance_weight *
+   120	                                          ((options.dx && options.dy) ? 0.70710678f : 1.f);
+   121	                        influence += distance_weight * (1.f + options.wind * alignment);
+   122	                    }
+   123	                }
+   124	                if (influence >= 0.65f + 1.2f * current_cell.moisture) {
+   125	                    next_cell.state = FIRE;
+   126	                }
+   127	            }
+   128	            active_cells += next_cell.state == FIRE;
+   129	        }
+   130	    }
+   131	    return active_cells;
+   132	}

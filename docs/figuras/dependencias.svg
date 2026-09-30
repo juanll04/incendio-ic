@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="570" viewBox="0 0 1000 570">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#526681"/></marker></defs>
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<style>text{font:16px sans-serif;fill:#25344a;text-anchor:middle}.title{font-size:24px;font-weight:600}.box{fill:white;stroke:#71839b;stroke-width:2;rx:12}.edge{fill:none;stroke:#526681;stroke-width:2;marker-end:url(#arrow)}.small{font-size:14px}</style>
+<text x="500" y="38" class="title">Tareas y dependencias del incendio</text>
+<text x="500" y="66">Grafo lógico: A y B pueden solaparse; el programa actual las ejecuta secuencialmente.</text>
+<rect class="box" x="325" y="95" width="350" height="62"/>
+<text x="500" y="120">initialize: terreno, foco y buffers</text><text x="500" y="143" class="small">Una vez, antes del bucle</text>
+<rect class="box" x="85" y="218" width="360" height="80"/>
+<text x="265" y="245">A · update_moisture</text><text x="265" y="270">Lee current; escribe next.moisture</text><text x="265" y="289" class="small">Todas las celdas; trabajo repartible por filas</text>
+<rect class="box" x="555" y="218" width="360" height="80"/>
+<text x="735" y="245">B · update_fire</text><text x="735" y="270">Lee current; escribe next.state/fuel</text><text x="735" y="289" class="small">Usa humedad actual; devuelve número con fuego</text>
+<path class="edge" d="M500 157V182H265V218"/><path class="edge" d="M500 182H735V218"/>
+<rect class="box" x="325" y="358" width="350" height="72"/>
+<text x="500" y="385">Ambas fases terminadas: swap</text><text x="500" y="410" class="small">En paralelo: barrera y reducción antes del intercambio</text>
+<path class="edge" d="M265 298V326H500V358"/><path class="edge" d="M735 298V326H500"/>
+<rect class="box" x="325" y="481" width="350" height="58"/>
+<text x="500" y="507">statistics y checksum</text><text x="500" y="529" class="small">Al terminar; fuera del tiempo del bucle</text>
+<path class="edge" d="M500 430V481"/><text x="545" y="462" class="small">fin</text>
+<path class="edge" d="M675 394H965V183H735"/>
+<text x="819" y="379" class="small">siguiente iteración</text>
+<text x="500" y="560" class="small">Dos buffers: el siguiente paso lee el resultado completo del anterior.</text>
+</svg>

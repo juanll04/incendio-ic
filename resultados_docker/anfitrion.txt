@@ -1,0 +1,7 @@
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+machdep.cpu.brand_string: Apple M2
+hw.memsize: 17179869184
+hw.ncpu: 8
+VM: CPUs=8 memoria_bytes=8215117824 SO=Docker Desktop

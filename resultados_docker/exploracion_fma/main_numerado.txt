@@ -1,0 +1,344 @@
+     1	#include <algorithm>
+     2	#include <chrono>
+     3	#include <cmath>
+     4	#include <cstdint>
+     5	#include <cstdlib>
+     6	#include <cstring>
+     7	#include <exception>
+     8	#include <iomanip>
+     9	#include <iostream>
+    10	#include <limits>
+    11	#include <random>
+    12	#include <sstream>
+    13	#include <stdexcept>
+    14	#include <string>
+    15	#include <thread>
+    16	#include <vector>
+    17	#include <csignal>
+    18	#include <sys/ioctl.h>
+    19	#include <termios.h>
+    20	#include <unistd.h>
+    21	
+    22	using namespace std;
+    23	enum State : uint8_t { EMPTY, TREE, FIRE, BURNT, WATER };
+    24	struct Cell { float moisture; uint8_t fuel, state; };
+    25	struct Options {
+    26	    size_t rows=30, cols=60, steps=80;
+    27	    uint32_t seed=42;
+    28	    float moisture=.28f, wind=.6f;
+    29	    int dx=1, dy=0;
+    30	    string direction="E";
+    31	    size_t fire_row=numeric_limits<size_t>::max(), fire_col=numeric_limits<size_t>::max();
+    32	    bool visual=false, profile=false, ascii=false, color=true, fire_set=false, keyboard=false, paused=false;
+    33	    unsigned delay=180;
+    34	};
+    35	volatile sig_atomic_t interrupted=0;
+    36	void on_signal(int) { interrupted=1; }
+    37	struct TerminalInput {
+    38	    termios saved{};
+    39	    bool enabled=false;
+    40	    explicit TerminalInput(bool visual) {
+    41	        if(!visual || !isatty(STDIN_FILENO) || tcgetattr(STDIN_FILENO,&saved)) return;
+    42	        termios mode=saved;
+    43	        mode.c_lflag &= static_cast<tcflag_t>(~(ICANON|ECHO));
+    44	        mode.c_cc[VMIN]=0;
+    45	        mode.c_cc[VTIME]=0;
+    46	        enabled=tcsetattr(STDIN_FILENO,TCSANOW,&mode)==0;
+    47	    }
+    48	    ~TerminalInput() {if(enabled) tcsetattr(STDIN_FILENO,TCSANOW,&saved);}
+    49	};
+    50	
+    51	size_t number(const string& s, const string& name) {
+    52	    if (s.empty() || s[0]=='-') throw invalid_argument("Valor inválido para " + name);
+    53	    try {
+    54	        size_t p=0; unsigned long long v=stoull(s,&p);
+    55	        if (p!=s.size() || v>numeric_limits<size_t>::max()) throw invalid_argument("");
+    56	        return static_cast<size_t>(v);
+    57	    } catch(const exception&) { throw invalid_argument("Valor inválido para " + name); }
+    58	}
+    59	float decimal(const string& s, const string& name) {
+    60	    try {
+    61	        size_t p=0; float v=stof(s,&p);
+    62	        if (p!=s.size() || !isfinite(v)) throw invalid_argument("");
+    63	        return v;
+    64	    } catch(const exception&) { throw invalid_argument("Valor inválido para " + name); }
+    65	}
+    66	void help() {
+    67	    cout << "Incendio secuencial C++17. Coordenadas de base 0.\n"
+    68	         << "--rows N --cols N --steps N --seed N --moisture X [0,1]\n"
+    69	         << "--wind-dir N|NE|E|SE|S|SW|W|NW --wind X [0,1]\n"
+    70	         << "--fire-row N --fire-col N --visual|--measure|--profile --delay MS --ascii --no-color\n"
+    71	         << "--profile: diagnóstico de tiempos por fase, separado de la medición habitual.\n"
+    72	         << "En modo visual: + acelera, - frena, espacio pausa, n avanza un paso, q termina.\n"
+    73	         << "Por defecto: 30x60, 80 pasos, semilla 42, humedad .28, viento E .6, foco (filas/2,columnas/5), medición; pausa visual 180 ms.\n";
+    74	}
+    75	Options parse(int argc, char** argv) {
+    76	    Options o;
+    77	    for (int i=1;i<argc;++i) {
+    78	        string a=argv[i];
+    79	        if (a=="--help") { help(); exit(0); }
+    80	        if (a=="--visual") { o.visual=true; continue; }
+    81	        if (a=="--measure") { o.visual=false; continue; }
+    82	        if (a=="--profile") { o.profile=true; continue; }
+    83	        if (a=="--ascii") { o.ascii=true; continue; }
+    84	        if (a=="--no-color") { o.color=false; continue; }
+    85	        if (i+1>=argc) throw invalid_argument("Falta valor para " + a);
+    86	        string v=argv[++i];
+    87	        if (a=="--rows") o.rows=number(v,a);
+    88	        else if (a=="--cols") o.cols=number(v,a);
+    89	        else if (a=="--steps") o.steps=number(v,a);
+    90	        else if (a=="--seed") { auto n=number(v,a); if(n>UINT32_MAX) throw invalid_argument("Semilla fuera de rango"); o.seed=static_cast<uint32_t>(n); }
+    91	        else if (a=="--moisture") o.moisture=decimal(v,a);
+    92	        else if (a=="--wind") o.wind=decimal(v,a);
+    93	        else if (a=="--fire-row") {o.fire_row=number(v,a);o.fire_set=true;}
+    94	        else if (a=="--fire-col") {o.fire_col=number(v,a);o.fire_set=true;}
+    95	        else if (a=="--delay") { auto n=number(v,a); if(n>60000) throw invalid_argument("--delay debe estar en [0,60000]"); o.delay=static_cast<unsigned>(n); }
+    96	        else if (a=="--wind-dir") {
+    97	            o.direction=v;
+    98	            const string dirs[]={"N","NE","E","SE","S","SW","W","NW"};
+    99	            const int xs[]={0,1,1,1,0,-1,-1,-1}, ys[]={-1,-1,0,1,1,1,0,-1};
+   100	            bool ok=false; for(int k=0;k<8;++k) if(v==dirs[k]) {o.dx=xs[k];o.dy=ys[k];ok=true;break;}
+   101	            if(!ok) throw invalid_argument("Dirección de viento: N, NE, E, SE, S, SW, W o NW");
+   102	        } else throw invalid_argument("Opción desconocida: " + a);
+   103	    }
+   104	    if(o.profile && o.visual) throw invalid_argument("--profile no se combina con --visual");
+   105	    if (!o.rows || !o.cols || !o.steps) throw invalid_argument("Filas, columnas e iteraciones deben ser positivas");
+   106	    if (o.rows>numeric_limits<size_t>::max()/o.cols || o.rows*o.cols>numeric_limits<vector<Cell>::difference_type>::max()/2)
+   107	        throw invalid_argument("Dimensiones demasiado grandes");
+   108	    if (o.moisture<0 || o.moisture>1 || o.wind<0 || o.wind>1) throw invalid_argument("Humedad y viento deben estar en [0,1]");
+   109	    if (o.fire_row==numeric_limits<size_t>::max()) o.fire_row=o.rows/2;
+   110	    if (o.fire_col==numeric_limits<size_t>::max()) o.fire_col=o.cols/5;
+   111	    if (o.fire_row>=o.rows || o.fire_col>=o.cols) throw invalid_argument("Foco fuera del terreno (coordenadas desde 0)");
+   112	    return o;
+   113	}
+   114	size_t index(size_t r,size_t c,size_t cols) { return r*cols+c; }
+   115	vector<Cell> initialize(const Options& o) {
+   116	    vector<Cell> cells(o.rows*o.cols);
+   117	    mt19937 rng(o.seed);
+   118	    uniform_real_distribution<float> u(0,1);
+   119	    for(size_t r=0;r<o.rows;++r) for(size_t c=0;c<o.cols;++c) {
+   120	        float x=(static_cast<float>(c)+.5f)/o.cols, y=(static_cast<float>(r)+.5f)/o.rows;
+   121	        bool lake=pow((x-.72f)/.105f,2)+pow((y-.55f)/.16f,2)<1;
+   122	        float z=u(rng), wet=u(rng);
+   123	        Cell &a=cells[index(r,c,o.cols)];
+   124	        a.state=lake?WATER:(z<.12f?EMPTY:TREE);
+   125	        a.fuel=a.state==TREE?static_cast<uint8_t>(3+static_cast<int>(u(rng)*4)):0;
+   126	        a.moisture=a.state==TREE?clamp(o.moisture+(wet-.5f)*.16f,0.f,1.f):0;
+   127	    }
+   128	    Cell &focus=cells[index(o.fire_row,o.fire_col,o.cols)];
+   129	    if(!o.fire_set && focus.state!=WATER) {focus.state=TREE;focus.fuel=5;focus.moisture=o.moisture;}
+   130	    if(focus.state!=TREE || !focus.fuel) throw invalid_argument("El foco cae sobre agua o un claro: elige otra celda con vegetación");
+   131	    focus.state=FIRE;
+   132	    return cells;
+   133	}
+   134	// A: solo lee actual; define la humedad de todas las celdas de siguiente.
+   135	void update_moisture(const vector<Cell>& current, vector<Cell>& next, size_t rows,size_t cols) {
+   136	    for(size_t r=0;r<rows;++r) for(size_t c=0;c<cols;++c) {
+   137	        size_t i=index(r,c,cols);
+   138	        if(current[i].state!=TREE && current[i].state!=FIRE) {next[i].moisture=current[i].moisture;continue;}
+   139	        int burning=0;
+   140	        for(int dr=-1;dr<=1;++dr) for(int dc=-1;dc<=1;++dc) {
+   141	            if(!dr && !dc) continue;
+   142	            auto rr=static_cast<long long>(r)+dr, cc=static_cast<long long>(c)+dc;
+   143	            if(rr>=0 && cc>=0 && static_cast<size_t>(rr)<rows && static_cast<size_t>(cc)<cols)
+   144	                burning += current[index(static_cast<size_t>(rr),static_cast<size_t>(cc),cols)].state==FIRE;
+   145	        }
+   146	        next[i].moisture=max(0.f,current[i].moisture-.006f-.012f*burning);
+   147	    }
+   148	}
+   149	// B: lee exclusivamente el buffer actual; define estado y combustible de siguiente.
+   150	size_t update_fire(const vector<Cell>& current, vector<Cell>& next, const Options& o) {
+   151	    size_t active=0;
+   152	    for(size_t r=0;r<o.rows;++r) for(size_t c=0;c<o.cols;++c) {
+   153	        size_t i=index(r,c,o.cols);
+   154	        const Cell &a=current[i]; Cell &b=next[i];
+   155	        b.state=a.state; b.fuel=a.fuel;
+   156	        if(a.state==FIRE) { b.fuel=static_cast<uint8_t>(a.fuel-1); if(!b.fuel) b.state=BURNT; }
+   157	        else if(a.state==TREE) {
+   158	            float influence=0;
+   159	            for(int dr=-1;dr<=1;++dr) for(int dc=-1;dc<=1;++dc) {
+   160	                if(!dr && !dc) continue;
+   161	                auto rr=static_cast<long long>(r)+dr, cc=static_cast<long long>(c)+dc;
+   162	                if(rr<0 || cc<0 || static_cast<size_t>(rr)>=o.rows || static_cast<size_t>(cc)>=o.cols) continue;
+   163	                if(current[index(static_cast<size_t>(rr),static_cast<size_t>(cc),o.cols)].state!=FIRE) continue;
+   164	                float len=(dr && dc)? .70710678f:1.f;
+   165	                // (dc,dr) apunta del vecino en llamas a esta celda.
+   166	                float alignment=(-dc*o.dx-dr*o.dy)*len*((o.dx && o.dy)?.70710678f:1.f);
+   167	                influence += len*(1.f+o.wind*alignment);
+   168	            }
+   169	            if(influence>=.65f+1.2f*a.moisture) b.state=FIRE;
+   170	        }
+   171	        active += b.state==FIRE;
+   172	    }
+   173	    return active;
+   174	}
+   175	struct Stats { size_t count[5]={}; double mean=0; size_t affected=0; };
+   176	Stats statistics(const vector<Cell>& cells, size_t initial_trees) {
+   177	    Stats s;
+   178	    for(const auto& a:cells) {++s.count[a.state]; if(a.state==TREE) s.mean+=a.moisture;}
+   179	    if(s.count[TREE]) s.mean/=s.count[TREE];
+   180	    s.affected=initial_trees-s.count[TREE];
+   181	    return s;
+   182	}
+   183	uint64_t checksum(const vector<Cell>& cells) {
+   184	    uint64_t h=1469598103934665603ULL;
+   185	    for(const auto& a:cells) {
+   186	        uint32_t m; static_assert(sizeof(m)==sizeof(a.moisture));
+   187	        memcpy(&m,&a.moisture,sizeof(m));
+   188	        for(unsigned v:{static_cast<unsigned>(a.state),static_cast<unsigned>(a.fuel),m}) {
+   189	            for(int j=0;j<4;++j) {h^=(v>>(j*8))&255u; h*=1099511628211ULL;}
+   190	        }
+   191	    }
+   192	    return h;
+   193	}
+   194	string percent(size_t n,size_t total) { return to_string((100*n)/total)+"%"; }
+   195	string glyph(const Cell& a,bool ascii,bool color) {
+   196	    const char* symbols_ascii[]={". ","T ","* ","# ","~ "};
+   197	    const char* symbols[]={"· ","♣ ","▓ ","░ ","≈ "};
+   198	    const char* colors[]={"\033[37m","\033[32m","\033[33;1m","\033[90m","\033[34;1m"};
+   199	    string s=ascii?symbols_ascii[a.state]:symbols[a.state];
+   200	    if(color) return string(colors[a.state])+s+"\033[0m";
+   201	    return s;
+   202	}
+   203	void draw(const vector<Cell>& cells,const Options& o,size_t step,size_t initial_trees,bool tty) {
+   204	    winsize ws{}; if(tty) ioctl(STDOUT_FILENO,TIOCGWINSZ,&ws);
+   205	    size_t width=ws.ws_col?ws.ws_col:100, height=ws.ws_row?ws.ws_row:40;
+   206	    bool side=width>=2*min(o.cols,size_t(35))+52;
+   207	    size_t shown_cols=min(o.cols,max(size_t(1),(width-(side?52:4))/2));
+   208	    size_t shown_rows=min(o.rows,max(size_t(1),height-(side?5:(o.keyboard?18:17))));
+   209	    size_t r0= o.fire_row>shown_rows/2? min(o.fire_row-shown_rows/2,o.rows-shown_rows):0;
+   210	    size_t c0= o.fire_col>shown_cols/2? min(o.fire_col-shown_cols/2,o.cols-shown_cols):0;
+   211	    auto s=statistics(cells,initial_trees);
+   212	    size_t filled=10*s.affected/initial_trees;
+   213	    string bar="["; for(size_t k=0;k<10;++k) bar+=(k<filled?(o.ascii?"#":"█"):(o.ascii?"-":"░")); bar+="]";
+   214	    string arrow;
+   215	    if(o.ascii) arrow=o.direction;
+   216	    else {
+   217	        const string dirs[]={"N","NE","E","SE","S","SW","W","NW"};
+   218	        const string arrows[]={"↑","↗","→","↘","↓","↙","←","↖"};
+   219	        for(int k=0;k<8;++k) if(o.direction==dirs[k]) arrow=arrows[k];
+   220	    }
+   221	    vector<string> info={"Paso "+to_string(step)+" / "+to_string(o.steps),
+   222	        "Viento "+arrow+(o.ascii?"":" "+o.direction)+"  "+to_string(o.wind),
+   223	        "Humedad media: "+(s.count[TREE]?to_string(s.mean):string("no aplica")),
+   224	        "Estados / total "+to_string(cells.size()),
+   225	        "Vegetación "+to_string(s.count[TREE])+" ("+percent(s.count[TREE],cells.size())+")",
+   226	        "Ardiendo   "+to_string(s.count[FIRE])+" ("+percent(s.count[FIRE],cells.size())+")",
+   227	        "Quemado    "+to_string(s.count[BURNT])+" ("+percent(s.count[BURNT],cells.size())+")",
+   228	        "Agua "+to_string(s.count[WATER])+" ("+percent(s.count[WATER],cells.size())+")  Vacío "+to_string(s.count[EMPTY])+" ("+percent(s.count[EMPTY],cells.size())+")",
+   229	        "Inicial afectada: "+to_string(s.affected)+"/"+to_string(initial_trees)+" ("+percent(s.affected,initial_trees)+")",
+   230	        bar+" del bosque inicial",
+   231	        "T vegetación  * fuego", "# quemado  ~ agua  . vacío"};
+   232	    if(o.keyboard) {
+   233	        info.push_back(to_string(o.delay)+" ms "+(o.paused?"[PAUSA] ":"")+"+/- rapidez");
+   234	        info.push_back("espacio pausa  n paso  q salir");
+   235	    }
+   236	    string tl=o.ascii?"+":"╭",tr=o.ascii?"+":"╮",bl=o.ascii?"+":"╰",br=o.ascii?"+":"╯",hz=o.ascii?"-":"─",vt=o.ascii?"|":"│";
+   237	    ostringstream out;
+   238	    out<<tl; for(size_t c=0;c<shown_cols*2;++c) out<<hz; out<<tr;
+   239	    if(side) out<<"  Incendio forestal";
+   240	    out<<'\n';
+   241	    for(size_t r=0;r<shown_rows;++r) {
+   242	        out<<vt;
+   243	        for(size_t c=0;c<shown_cols;++c) out<<glyph(cells[index(r+r0,c+c0,o.cols)],o.ascii,o.color&&tty);
+   244	        out<<vt; if(side && r<info.size()) out<<"  "<<info[r]; out<<'\n';
+   245	    }
+   246	    out<<bl; for(size_t c=0;c<shown_cols*2;++c) out<<hz; out<<br<<'\n';
+   247	    if(r0 || c0 || shown_rows<o.rows || shown_cols<o.cols) {
+   248	        if(tty && width<60) out<<"Vista: f"<<r0<<"-"<<r0+shown_rows-1<<" c"<<c0<<"-"<<c0+shown_cols-1<<'\n';
+   249	        else out<<"Vista recortada: filas "<<r0<<".."<<r0+shown_rows-1<<", columnas "<<c0<<".."<<c0+shown_cols-1<<"\n";
+   250	    }
+   251	    if(!side) for(const auto& line:info) out<<line<<'\n';
+   252	    else for(size_t k=shown_rows;k<info.size();++k) out<<info[k]<<'\n';
+   253	    if(tty) {
+   254	        cout<<"\033[H";
+   255	        for(char ch:out.str()) {if(ch=='\n') cout<<"\033[K\n"; else cout<<ch;}
+   256	        cout<<"\033[J";
+   257	    } else cout<<out.str();
+   258	    cout.flush();
+   259	}
+   260	bool wait_frame(Options& o, TerminalInput& input, const vector<Cell>& cells, size_t step, size_t initial_trees) {
+   261	    if(!input.enabled) {
+   262	        if(o.delay) this_thread::sleep_for(chrono::milliseconds(o.delay));
+   263	        return !interrupted;
+   264	    }
+   265	    auto deadline=chrono::steady_clock::now()+chrono::milliseconds(o.delay);
+   266	    while(!interrupted) {
+   267	        char key;
+   268	        bool changed=false;
+   269	        while(read(STDIN_FILENO,&key,1)==1) {
+   270	            if(key=='q' || key=='Q') return false;
+   271	            if(key==' '){o.paused=!o.paused;changed=true;deadline=chrono::steady_clock::now()+chrono::milliseconds(o.delay);}
+   272	            if(key=='n' || key=='N') {if(o.paused) return true;}
+   273	            if(key=='+'){o.delay=o.delay>50?o.delay-50:0;changed=true;deadline=chrono::steady_clock::now()+chrono::milliseconds(o.delay);}
+   274	            if(key=='-'){o.delay=min(60000u,o.delay+50);changed=true;deadline=chrono::steady_clock::now()+chrono::milliseconds(o.delay);}
+   275	        }
+   276	        if(changed) draw(cells,o,step,initial_trees,true);
+   277	        if(!o.paused && chrono::steady_clock::now()>=deadline) return true;
+   278	        this_thread::sleep_for(chrono::milliseconds(15));
+   279	    }
+   280	    return false;
+   281	}
+   282	int main(int argc,char** argv) {
+   283	    bool cursor_hidden=false;
+   284	    try {
+   285	        Options o=parse(argc,argv);
+   286	        auto current=initialize(o), next=vector<Cell>(current.size());
+   287	        size_t initial_trees=1;
+   288	        for(const auto& a:current) initial_trees+=a.state==TREE;
+   289	        bool tty=isatty(STDOUT_FILENO);
+   290	        TerminalInput input(o.visual && tty);
+   291	        o.keyboard=input.enabled;
+   292	        signal(SIGINT,on_signal); signal(SIGTERM,on_signal);
+   293	        if(o.visual) {if(tty) {cout<<"\033[2J\033[H\033[?25l";cursor_hidden=true;} draw(current,o,0,initial_trees,tty);}
+   294	        auto start=chrono::steady_clock::now();
+   295	        chrono::duration<double> visual_work{0};
+   296	        chrono::duration<double> moisture_work{0}, fire_work{0};
+   297	        size_t executed=0, active_steps=0;
+   298	        bool stopped=false;
+   299	        for(size_t step=0;step<o.steps && !interrupted;++step) {
+   300	            if(o.visual && tty && !wait_frame(o,input,current,executed,initial_trees)) {stopped=!interrupted;break;}
+   301	            auto work_start=(o.visual || o.profile)?chrono::steady_clock::now():chrono::steady_clock::time_point{};
+   302	            update_moisture(current,next,o.rows,o.cols);
+   303	            auto moisture_end=o.profile?chrono::steady_clock::now():chrono::steady_clock::time_point{};
+   304	            size_t active=update_fire(current,next,o);
+   305	            if(o.profile) {
+   306	                auto fire_end=chrono::steady_clock::now();
+   307	                moisture_work+=moisture_end-work_start;
+   308	                fire_work+=fire_end-moisture_end;
+   309	            }
+   310	            current.swap(next);
+   311	            if(o.visual) visual_work+=chrono::steady_clock::now()-work_start;
+   312	            ++executed;
+   313	            if(o.visual) {
+   314	                if(active) ++active_steps;
+   315	                if(tty || step+1==o.steps || !active) draw(current,o,executed,initial_trees,tty);
+   316	                if(!active) break;
+   317	            } else {
+   318	                active_steps+=active!=0;
+   319	            }
+   320	        }
+   321	        auto end=chrono::steady_clock::now();
+   322	        if(cursor_hidden) {cout<<"\033[?25h";cursor_hidden=false;}
+   323	        auto s=statistics(current,initial_trees);
+   324	        cout<<fixed<<setprecision(6)
+   325	            <<"Resumen: "<<o.rows<<"x"<<o.cols<<"="<<current.size()<<" celdas; semilla="<<o.seed
+   326	            <<"; humedad="<<o.moisture<<"; viento="<<o.direction<<":"<<o.wind
+   327	            <<"; foco=("<<o.fire_row<<","<<o.fire_col<<")\n"
+   328	            <<"Iteraciones="<<executed<<"; con fuego al terminar="<<active_steps
+   329	            <<"; tiempo_bucle_s="<<(o.visual?visual_work.count():chrono::duration<double>(end-start).count())<<"\n"
+   330	            <<"Final: vegetación="<<s.count[TREE]<<" fuego="<<s.count[FIRE]<<" quemado="<<s.count[BURNT]
+   331	            <<" agua="<<s.count[WATER]<<" vacío="<<s.count[EMPTY]<<"; inicial_afectada="<<s.affected<<"/"<<initial_trees
+   332	            <<"; checksum="<<hex<<checksum(current)<<dec<<"\n";
+   333	        cout<<"Memoria: cell_bytes="<<sizeof(Cell)<<"; buffers_bytes="
+   334	            <<2.0*current.size()*sizeof(Cell)<<"; quemado_pct_total="<<100.0*s.count[BURNT]/current.size()
+   335	            <<"; afectado_pct_bosque="<<100.0*s.affected/initial_trees<<"\n";
+   336	        if(o.profile) cout<<"Diagnóstico: humedad_s="<<moisture_work.count()<<"; fuego_s="<<fire_work.count()
+   337	            <<"; resto_s="<<max(0.0,chrono::duration<double>(end-start).count()-moisture_work.count()-fire_work.count())<<"\n";
+   338	        if(interrupted) {cerr<<"Interrumpido tras "<<executed<<" iteraciones\n";return 130;}
+   339	        if(stopped) cout<<"Fin visual: detenido con q.\n";
+   340	        if(o.visual && !s.count[FIRE]) cout<<"Fin visual: fuego extinguido.\n";
+   341	    } catch(const bad_alloc&) {if(cursor_hidden) cout<<"\033[?25h"; cerr<<"Error: memoria insuficiente\n";return 1;}
+   342	      catch(const length_error&) {if(cursor_hidden) cout<<"\033[?25h";cerr<<"Error: dimensiones demasiado grandes para reservar memoria\n";return 1;}
+   343	      catch(const exception& e) {if(cursor_hidden) cout<<"\033[?25h";cerr<<"Error: "<<e.what()<<". Usa --help.\n";return 1;}
+   344	}

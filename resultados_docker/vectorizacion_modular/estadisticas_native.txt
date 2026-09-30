@@ -1,0 +1,4 @@
+estadisticas.cpp:7:29: missed: couldn't vectorize loop
+estadisticas.cpp:7:29: missed: not vectorized: control flow in loop.
+estadisticas.cpp:22:29: missed: couldn't vectorize loop
+estadisticas.cpp:32:22: missed: not vectorized: unsupported use in stmt.

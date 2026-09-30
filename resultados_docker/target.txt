@@ -1,0 +1,79 @@
+The following options are target specific:
+  -mabi=                      Generate code that conforms to the specified ABI.
+  -march=                     Use features of architecture ARCH.
+  -mbig-endian                Assume target CPU is configured as big endian.
+  -mbionic                    Use Bionic C library.
+  -mbranch-protection=        Use branch-protection features.
+  -mcmodel=                   Specify the code model.
+  -mcpu=                      Use features of and optimize for CPU.
+  -mfix-cortex-a53-835769     Workaround for ARM Cortex-A53 Erratum number
+                              835769.
+  -mfix-cortex-a53-843419     Workaround for ARM Cortex-A53 Erratum number
+                              843419.
+  -mgeneral-regs-only         Generate code which uses only the general
+                              registers.
+  -mglibc                     Use GNU C library.
+  -mharden-sls=               Generate code to mitigate against straight line
+                              speculation.
+  -mlittle-endian             Assume target CPU is configured as little endian.
+  -mlow-precision-div         Enable the division approximation.  Enabling this
+                              reduces precision of division results to about 16
+                              bits for single precision and to 32 bits for
+                              double precision.
+  -mlow-precision-recip-sqrt  Enable the reciprocal square root approximation. 
+                              Enabling this reduces precision of reciprocal
+                              square root results to about 16 bits for single
+                              precision and to 32 bits for double precision.
+  -mlow-precision-sqrt        Enable the square root approximation.  Enabling
+                              this reduces precision of square root results to
+                              about 16 bits for single precision and to 32 bits
+                              for double precision. If enabled, it implies
+                              -mlow-precision-recip-sqrt.
+  -mmusl                      Use musl C library.
+  -momit-leaf-frame-pointer   Omit the frame pointer in leaf functions.
+  -moutline-atomics           Generate local calls to out-of-line atomic
+                              operations.
+  -moverride=<string>         Power users only! Override CPU optimization
+                              parameters.
+  -mpc-relative-literal-loads PC relative literal loads.
+  -msign-return-address=      Select return address signing scope.
+  -mstack-protector-guard-offset= Use an immediate to offset from the stack
+                              protector guard register, sp_el0. This option is
+                              for use with fstack-protector-strong and not for
+                              use in user-land code.
+  -mstack-protector-guard-reg= Use the system register specified on the command
+                              line as the stack protector guard register. This
+                              option is for use with fstack-protector-strong
+                              and not for use in user-land code.
+  -mstack-protector-guard=    Use given stack-protector guard.
+  -mstrict-align              Don't assume that unaligned accesses are handled
+                              by the system.
+  -msve-vector-bits=<number>  Set the number of bits in an SVE vector register.
+  -mtls-dialect=              Specify TLS dialect.
+  -mtls-size=                 Specifies bit size of immediate TLS offsets. 
+                              Valid values are 12, 24, 32, 48.
+  -mtrack-speculation         Generate code to track when the CPU might be
+                              speculating incorrectly.
+  -mtune=                     Optimize for CPU.
+  -muclibc                    Use uClibc C library.
+  -mverbose-cost-dump         Enables verbose cost model dumping in the debug
+                              dump files.
+
+  Known AArch64 ABIs (for use with the -mabi= option):
+    ilp32 lp64
+
+  Supported AArch64 return address signing scope (for use with -msign-return-address= option):
+    all non-leaf none
+
+  The code model option names for -mcmodel:
+    large small tiny
+
+  Valid arguments to -mstack-protector-guard=:
+    global sysreg
+
+  The possible SVE vector lengths:
+    1024 128 2048 256 512 scalable
+
+  The possible TLS dialects:
+    desc trad
+

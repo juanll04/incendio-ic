@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1530" viewBox="0 0 1000 1530">
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<style>text{font:15px sans-serif;fill:#25344a}.title{font-size:20px;font-weight:600}.grid{stroke:#dce3ec}.series{stroke:#cf583c;stroke-width:3;fill:none}.range{stroke:#25344a;stroke-width:2}</style>
+<text x="40" y="35" class="title" text-anchor="start">mediciones_docker: aarch64 · g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0</text>
+<text x="40" y="63" class="" text-anchor="start">3 repeticiones · mediana y rango mínimo–máximo · bucle sin animación · -ffp-contract=off</text>
+<text x="55" y="110" class="title" text-anchor="start">1. Tamaño del terreno</text>
+<text x="55" y="136" class="" text-anchor="start">-O2 · 160 iteraciones · humedad 0.28 · viento E 0.6</text>
+<path class="grid" d="M100 368.0H935"/>
+<text x="88" y="373.0" class="" text-anchor="end">0.00</text>
+<path class="grid" d="M100 318.0H935"/>
+<text x="88" y="323.0" class="" text-anchor="end">2.57</text>
+<path class="grid" d="M100 268.0H935"/>
+<text x="88" y="273.0" class="" text-anchor="end">5.13</text>
+<path class="grid" d="M100 218.0H935"/>
+<text x="88" y="223.0" class="" text-anchor="end">7.70</text>
+<path class="grid" d="M100 168.0H935"/>
+<text x="88" y="173.0" class="" text-anchor="end">10.26</text>
+<text x="55" y="158" class="" text-anchor="start">s</text>
+<circle cx="145.0" cy="357.115732644074" r="5" fill="#cf583c"/>
+<path class="range" d="M145.0 356.68749419131694V360.0847200860798 M138.0 356.68749419131694H152.0 M138.0 360.0847200860798H152.0"/>
+<text x="145.0" y="344.68749419131694" class="" text-anchor="middle">0.559</text>
+<text x="145.0" y="393" class="" text-anchor="middle">0.16</text>
+<circle cx="294.0" cy="333.6708756750742" r="5" fill="#cf583c"/>
+<path class="range" d="M294.0 331.7072100535253V334.32962012911054 M287.0 331.7072100535253H301.0 M287.0 334.32962012911054H301.0"/>
+<text x="294.0" y="319.7072100535253" class="" text-anchor="middle">1.762</text>
+<text x="294.0" y="393" class="" text-anchor="middle">0.64</text>
+<circle cx="542.3333333333333" cy="284.5955050020367" r="5" fill="#cf583c"/>
+<path class="range" d="M542.3333333333333 279.5007183428231V285.54734085685436 M535.3333333333333 279.5007183428231H549.3333333333333 M535.3333333333333 285.54734085685436H549.3333333333333"/>
+<text x="542.3333333333333" y="267.5007183428231" class="" text-anchor="middle">4.280</text>
+<text x="542.3333333333333" y="393" class="" text-anchor="middle">1.44</text>
+<circle cx="890.0" cy="214.09159109781694" r="5" fill="#cf583c"/>
+<path class="range" d="M890.0 204.0655737704918V231.0448690823532 M883.0 204.0655737704918H897.0 M883.0 231.0448690823532H897.0"/>
+<text x="890.0" y="192.0655737704918" class="" text-anchor="middle">7.899</text>
+<text x="890.0" y="393" class="" text-anchor="middle">2.56</text>
+<polyline class="series" points="145.0,357.115732644074 294.0,333.6708756750742 542.3333333333333,284.5955050020367 890.0,214.09159109781694"/>
+<text x="517.5" y="423" class="" text-anchor="middle">Millones de celdas (filas × columnas)</text>
+<text x="55" y="460" class="title" text-anchor="start">2. Cantidad de iteraciones</text>
+<text x="55" y="486" class="" text-anchor="start">-O2 · terreno 1600 × 1600</text>
+<path class="grid" d="M100 718.0H935"/>
+<text x="88" y="723.0" class="" text-anchor="end">0.00</text>
+<path class="grid" d="M100 668.0H935"/>
+<text x="88" y="673.0" class="" text-anchor="end">2.57</text>
+<path class="grid" d="M100 618.0H935"/>
+<text x="88" y="623.0" class="" text-anchor="end">5.13</text>
+<path class="grid" d="M100 568.0H935"/>
+<text x="88" y="573.0" class="" text-anchor="end">7.70</text>
+<path class="grid" d="M100 518.0H935"/>
+<text x="88" y="523.0" class="" text-anchor="end">10.26</text>
+<text x="55" y="508" class="" text-anchor="start">s</text>
+<circle cx="145.0" cy="680.4581325208112" r="5" fill="#cf583c"/>
+<path class="range" d="M145.0 675.9044601609659V681.9117622091829 M138.0 675.9044601609659H152.0 M138.0 681.9117622091829H152.0"/>
+<text x="145.0" y="663.9044601609659" class="" text-anchor="middle">1.927</text>
+<text x="145.0" y="743" class="" text-anchor="middle">40</text>
+<circle cx="393.3333333333333" cy="641.5214601730191" r="5" fill="#cf583c"/>
+<path class="range" d="M393.3333333333333 640.4280277745586V642.8178859376106 M386.3333333333333 640.4280277745586H400.3333333333333 M386.3333333333333 642.8178859376106H400.3333333333333"/>
+<text x="393.3333333333333" y="628.4280277745586" class="" text-anchor="middle">3.925</text>
+<text x="393.3333333333333" y="743" class="" text-anchor="middle">80</text>
+<circle cx="641.6666666666666" cy="603.4010674458183" r="5" fill="#cf583c"/>
+<path class="range" d="M641.6666666666666 599.6506588140151V605.1401504662899 M634.6666666666666 599.6506588140151H648.6666666666666 M634.6666666666666 605.1401504662899H648.6666666666666"/>
+<text x="641.6666666666666" y="587.6506588140151" class="" text-anchor="middle">5.881</text>
+<text x="641.6666666666666" y="743" class="" text-anchor="middle">120</text>
+<circle cx="890.0" cy="564.091591097817" r="5" fill="#cf583c"/>
+<path class="range" d="M890.0 554.0655737704918V581.0448690823532 M883.0 554.0655737704918H897.0 M883.0 581.0448690823532H897.0"/>
+<text x="890.0" y="542.0655737704918" class="" text-anchor="middle">7.899</text>
+<text x="890.0" y="743" class="" text-anchor="middle">160</text>
+<polyline class="series" points="145.0,680.4581325208112 393.3333333333333,641.5214601730191 641.6666666666666,603.4010674458183 890.0,564.091591097817"/>
+<text x="517.5" y="773" class="" text-anchor="middle">Iteraciones</text>
+<text x="55" y="810" class="title" text-anchor="start">3. Opciones de compilación</text>
+<text x="55" y="836" class="" text-anchor="start">Mismo terreno 1600 × 1600 · 160 iteraciones · medición habitual</text>
+<path class="grid" d="M100 1068.0H935"/>
+<text x="88" y="1073.0" class="" text-anchor="end">0.00</text>
+<path class="grid" d="M100 1018.0H935"/>
+<text x="88" y="1023.0" class="" text-anchor="end">24.28</text>
+<path class="grid" d="M100 968.0H935"/>
+<text x="88" y="973.0" class="" text-anchor="end">48.57</text>
+<path class="grid" d="M100 918.0H935"/>
+<text x="88" y="923.0" class="" text-anchor="end">72.85</text>
+<path class="grid" d="M100 868.0H935"/>
+<text x="88" y="873.0" class="" text-anchor="end">97.13</text>
+<text x="55" y="858" class="" text-anchor="start">s</text>
+<rect x="97.0" y="1051.7362011073428" width="96" height="16.263798892657178" fill="#cf583c" rx="3"/>
+<path class="range" d="M145.0 1050.676732487863V1053.5276867427187 M138.0 1050.676732487863H152.0 M138.0 1053.5276867427187H152.0"/>
+<text x="145.0" y="1038.676732487863" class="" text-anchor="middle">7.899</text>
+<text x="145.0" y="1093" class="" text-anchor="middle">-O2</text>
+<rect x="345.3333333333333" y="1011.9322425860172" width="96" height="56.067757413982804" fill="#cf583c" rx="3"/>
+<path class="range" d="M393.3333333333333 904.0655737704918V1012.694712267488 M386.3333333333333 904.0655737704918H400.3333333333333 M386.3333333333333 1012.694712267488H400.3333333333333"/>
+<text x="393.3333333333333" y="892.0655737704918" class="" text-anchor="middle">27.231</text>
+<text x="393.3333333333333" y="1093" class="" text-anchor="middle">-O0</text>
+<rect x="593.6666666666666" y="1040.2904771844426" width="96" height="27.70952281555742" fill="#cf583c" rx="3"/>
+<path class="range" d="M641.6666666666666 1039.6820745181367V1046.384942996552 M634.6666666666666 1039.6820745181367H648.6666666666666 M634.6666666666666 1046.384942996552H648.6666666666666"/>
+<text x="641.6666666666666" y="1027.6820745181367" class="" text-anchor="middle">13.458</text>
+<text x="641.6666666666666" y="1093" class="" text-anchor="middle">-O3</text>
+<rect x="842.0" y="1053.975579771102" width="96" height="14.024420228897952" fill="#cf583c" rx="3"/>
+<path class="range" d="M890.0 1053.462733410182V1055.335364383644 M883.0 1053.462733410182H897.0 M883.0 1055.335364383644H897.0"/>
+<text x="890.0" y="1041.462733410182" class="" text-anchor="middle">6.811</text>
+<text x="890.0" y="1093" class="" text-anchor="middle">-O3 -march=native</text>
+<text x="517.5" y="1123" class="" text-anchor="middle">Opciones GCC</text>
+<text x="55" y="1160" class="title" text-anchor="start">4. Diagnóstico por fases</text>
+<text x="55" y="1186" class="" text-anchor="start">-O2 · referencia · cronometraje adicional; separado de las comparaciones anteriores</text>
+<path class="grid" d="M100 1418.0H935"/>
+<text x="88" y="1423.0" class="" text-anchor="end">0.00</text>
+<path class="grid" d="M100 1368.0H935"/>
+<text x="88" y="1373.0" class="" text-anchor="end">1.67</text>
+<path class="grid" d="M100 1318.0H935"/>
+<text x="88" y="1323.0" class="" text-anchor="end">3.33</text>
+<path class="grid" d="M100 1268.0H935"/>
+<text x="88" y="1273.0" class="" text-anchor="end">5.00</text>
+<path class="grid" d="M100 1218.0H935"/>
+<text x="88" y="1223.0" class="" text-anchor="end">6.67</text>
+<text x="55" y="1208" class="" text-anchor="start">s</text>
+<rect x="97.0" y="1307.1486463087574" width="96" height="110.8513536912426" fill="#cf583c" rx="3"/>
+<path class="range" d="M145.0 1285.1876289638626V1310.6091955242523 M138.0 1285.1876289638626H152.0 M138.0 1310.6091955242523H152.0"/>
+<text x="145.0" y="1273.1876289638626" class="" text-anchor="middle">3.695</text>
+<text x="145.0" y="1443" class="" text-anchor="middle">Humedad</text>
+<rect x="469.5" y="1278.4376936772396" width="96" height="139.56230632276038" fill="#cf583c" rx="3"/>
+<path class="range" d="M517.5 1254.0655737704917V1292.795749738953 M510.5 1254.0655737704917H524.5 M510.5 1292.795749738953H524.5"/>
+<text x="517.5" y="1242.0655737704917" class="" text-anchor="middle">4.653</text>
+<text x="517.5" y="1443" class="" text-anchor="middle">Fuego</text>
+<rect x="842.0" y="1417.9975702392755" width="96" height="0.0024297607244534447" fill="#cf583c" rx="3"/>
+<path class="range" d="M890.0 1417.9972402717697V1417.9978702097353 M883.0 1417.9972402717697H897.0 M883.0 1417.9978702097353H897.0"/>
+<text x="890.0" y="1405.9972402717697" class="" text-anchor="middle">8.1e-05</text>
+<text x="890.0" y="1443" class="" text-anchor="middle">Resto del bucle</text>
+<text x="517.5" y="1473" class="" text-anchor="middle">Fases; resto incluye intercambio, contadores e instrumentación</text>
+</svg>

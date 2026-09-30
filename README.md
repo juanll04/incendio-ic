@@ -24,9 +24,9 @@ En macOS, `/usr/bin/g++` ejecuta Apple Clang. La práctica pide Linux/GCC para l
 
 ## Animación de la propagación
 
-![Animación del incendio en el paso 18: vegetación, frente de fuego, zonas quemadas, agua y estadísticas](docs/figuras/animacion.png)
+![Propagación del incendio desde el foco inicial hasta su extinción, con estadísticas en cada paso](docs/figuras/animacion.gif)
 
-Fotograma de una ejecución real de 20 × 48 celdas, semilla 42, humedad inicial del 28% y viento hacia el este al 60%. En el paso 18 hay 126 celdas ardiendo y 306 quemadas. El panel muestra el estado del terreno y la proporción de bosque afectado. Puedes ejecutar la animación con `make visual`.
+Ejecución real de 20 × 48 celdas, semilla 42, humedad inicial del 28% y viento hacia el este al 60%. El GIF muestra cómo el fuego se extiende desde el foco inicial hasta extinguirse en el paso 44. El panel actualiza los recuentos y la proporción de bosque afectado en cada paso. Puedes ejecutar la animación con `make visual`.
 
 ## Documentación
 
@@ -49,7 +49,7 @@ incendio/
 │   ├── rendimiento.md
 │   ├── paralelizacion.md
 │   ├── historial.md
-│   └── figuras/          # Grafo de dependencias y captura de la animación
+│   └── figuras/          # Grafo de dependencias y GIF de la animación
 ├── src/                  # Implementación C++
 ├── include/              # Tipos y declaraciones
 ├── scripts/              # Medición y comprobación

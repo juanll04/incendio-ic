@@ -209,3 +209,9 @@ Se añadió `docs/figuras/animacion.png` y se insertó en README con una ruta re
 ## 01-10-2026: Acceso público al repositorio
 
 Por petición del usuario, se cambió la visibilidad de [juanll04/incendio-ic](https://github.com/juanll04/incendio-ic) de privada a pública. Se comprobó sin autenticación que el repositorio y la imagen de la animación son accesibles. Los compañeros pueden consultar el proyecto con el enlace, sin invitación.
+
+## 01-10-2026: GIF de la propagación
+
+Se sustituyó la captura estática del README por `docs/figuras/animacion.gif`. La grabación recoge los 45 fotogramas de una ejecución real, desde el paso 0 hasta la extinción en el paso 44, con terreno de 20 × 48 y semilla 42. Se conservaron los colores y las estadísticas de la salida ANSI. El GIF se reproduce en bucle y mantiene más tiempo los fotogramas inicial y final.
+
+Se revisaron visualmente el avance del fuego y el estado final, y se ajustó el ancho para mostrar el panel completo. Se eliminó el PNG sustituido y se actualizó el enlace del README. El código y los datos medidos se conservan.

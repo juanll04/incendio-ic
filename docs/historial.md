@@ -205,3 +205,7 @@ Se creó el repositorio privado [juanll04/incendio-ic](https://github.com/juanll
 Se retiró del README el fragmento sobre la confirmación del entorno y los requisitos de Python indicado por el usuario. La descripción identifica directamente las mediciones Linux/GCC en Docker ARM64 sobre M2. El documento de rendimiento utiliza la misma descripción del entorno.
 
 Se añadió `docs/figuras/animacion.png` y se insertó en README con una ruta relativa para mostrarla en GitHub. La imagen recoge el paso 18 de una ejecución real en pseudoterminal de 20 × 48 celdas y semilla 42, pausada con el teclado. Se renderizó el contenido ANSI de ese fotograma y se comprobó visualmente que aparecen el mapa completo y las estadísticas. Los recuentos son 126 celdas ardiendo y 306 quemadas. Se aplicó humanizer a las explicaciones nuevas. El código y los datos de mediciones se conservan.
+
+## 01-10-2026: Acceso público al repositorio
+
+Por petición del usuario, se cambió la visibilidad de [juanll04/incendio-ic](https://github.com/juanll04/incendio-ic) de privada a pública. Se comprobó sin autenticación que el repositorio y la imagen de la animación son accesibles. Los compañeros pueden consultar el proyecto con el enlace, sin invitación.

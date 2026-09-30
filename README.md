@@ -20,7 +20,13 @@ docker run --rm -it --platform linux/arm64 --cpus=2 --memory=2g \
   incendio-ic:practica2 ./incendio --visual --rows 20 --cols 48 --steps 70
 ```
 
-En macOS, `/usr/bin/g++` ejecuta Apple Clang. La práctica pide Linux/GCC para las mediciones: las campañas disponibles se hicieron en Docker ARM64 sobre un M2 y debe confirmarse con el profesorado si ese entorno es válido. Los scripts de medición y comprobación necesitan Python 3, sin paquetes externos.
+En macOS, `/usr/bin/g++` ejecuta Apple Clang. La práctica pide Linux/GCC para las mediciones: las campañas disponibles se hicieron en Docker ARM64 sobre un M2.
+
+## Animación de la propagación
+
+![Animación del incendio en el paso 18: vegetación, frente de fuego, zonas quemadas, agua y estadísticas](docs/figuras/animacion.png)
+
+Fotograma de una ejecución real de 20 × 48 celdas, semilla 42, humedad inicial del 28% y viento hacia el este al 60%. En el paso 18 hay 126 celdas ardiendo y 306 quemadas. El panel muestra el estado del terreno y la proporción de bosque afectado. Puedes ejecutar la animación con `make visual`.
 
 ## Documentación
 
@@ -43,7 +49,7 @@ incendio/
 │   ├── rendimiento.md
 │   ├── paralelizacion.md
 │   ├── historial.md
-│   └── figuras/dependencias.svg
+│   └── figuras/          # Grafo de dependencias y captura de la animación
 ├── src/                  # Implementación C++
 ├── include/              # Tipos y declaraciones
 ├── scripts/              # Medición y comprobación
@@ -52,4 +58,4 @@ incendio/
 └── Dockerfile
 ```
 
-La [campaña archivada](resultados_docker/mediciones_docker_resumen.md) corresponde a la [fuente monolítica](resultados_docker/fuente_medida.cpp). La versión actual está modularizada y tiene estadísticas visuales coloreadas; todavía no cuenta con una campaña completa. Para obtener resultados nuevos sin sustituir los históricos, sigue los comandos de [rendimiento](docs/rendimiento.md).
+La [campaña archivada](resultados_docker/mediciones_docker_resumen.md) corresponde a la [fuente monolítica](resultados_docker/fuente_medida.cpp). La versión actual está modularizada y tiene estadísticas visuales coloreadas. Los resultados archivados identifican la fuente y el entorno exactos con los que se midieron. Para obtener resultados nuevos sin sustituir los históricos, sigue los comandos de [rendimiento](docs/rendimiento.md).

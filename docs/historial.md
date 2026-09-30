@@ -199,3 +199,9 @@ Se eliminó la guía PDF por petición del usuario y se retiraron su enlace y su
 El repositorio se prepara desde `incendio/`, con el código, la documentación y la evidencia de mediciones. Los apuntes y enunciados de la asignatura quedan fuera. Se revisó la redacción con humanizer y se comprobaron los enlaces locales.
 
 Se creó el repositorio privado [juanll04/incendio-ic](https://github.com/juanll04/incendio-ic) y se subió el proyecto en la rama `main`. El ejecutable local y los archivos de macOS quedan excluidos por `.gitignore`; los CSV se conservaron byte a byte en Git.
+
+## 01-10-2026: Captura de la animación en GitHub
+
+Se retiró del README el fragmento sobre la confirmación del entorno y los requisitos de Python indicado por el usuario. La descripción identifica directamente las mediciones Linux/GCC en Docker ARM64 sobre M2. El documento de rendimiento utiliza la misma descripción del entorno.
+
+Se añadió `docs/figuras/animacion.png` y se insertó en README con una ruta relativa para mostrarla en GitHub. La imagen recoge el paso 18 de una ejecución real en pseudoterminal de 20 × 48 celdas y semilla 42, pausada con el teclado. Se renderizó el contenido ANSI de ese fotograma y se comprobó visualmente que aparecen el mapa completo y las estadísticas. Los recuentos son 126 celdas ardiendo y 306 quemadas. Se aplicó humanizer a las explicaciones nuevas. El código y los datos de mediciones se conservan.

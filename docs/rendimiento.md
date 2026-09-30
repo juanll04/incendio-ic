@@ -20,7 +20,7 @@ Medido el 30-09-2026 sobre macOS/Apple M2, Docker Desktop 4.92.0, motor Docker 2
 
 El caso de referencia se mantiene en 1600 × 1600 = 2 560 000 celdas y 160 pasos, semilla 42, humedad 0.28 y viento E 0.6. Su calentamiento inicial con GCC `-O2` tardó 7.580868 s, suficiente para mantener la referencia. `make run` reproduce los mismos parámetros mediante los valores por defecto de semilla/humedad/viento.
 
-Estos resultados se obtuvieron con Linux y GCC dentro de Docker. El PDF exige el entorno Linux indicado por la asignatura: el equipo debe confirmar si Docker es aceptado o repetir allí la campaña. Los tiempos de este contenedor no se presentan como tiempos de un Linux físico ni se mezclan con los de Clang.
+Estos resultados se obtuvieron con Linux y GCC dentro de Docker. Las tablas registran el entorno del contenedor y mantienen separados los tiempos de GCC y los de Clang.
 
 ## Qué se cronometra
 
@@ -123,7 +123,7 @@ La carga del anfitrión, frecuencia/temperatura y condiciones de virtualización
 | Medido | 33 ejecuciones Linux/GCC Docker, cuatro gráficas, tiempos por fase, tamaño de Cell, recuentos y checksums. |
 | Observado en compilación | Informes y ensamblador GCC: SIMD en inicialización; bucles principales sin vectorización en las opciones analizadas. |
 | Estimado | Complejidad O(filas × columnas × pasos), memoria de una alternativa SoA y escenarios de ganancia/eficiencia paralela. |
-| Pendiente del equipo | Validación del entorno Docker con el profesorado, mediciones de entrega si exige otro entorno, comunicación de tema/integrantes y memoria final. |
+| Pendiente del equipo | Medición de la versión de entrega, comunicación de tema/integrantes y memoria final. |
 | Para prácticas posteriores | Implementación paralela, velocidad y eficiencia reales, y comparación medida de organizaciones de datos. |
 
 

@@ -197,3 +197,5 @@ Se comprobaron los 91 enlaces locales y los hashes de los archivos conservados; 
 Se eliminó la guía PDF por petición del usuario y se retiraron su enlace y su carpeta del README. Las entradas anteriores conservan el registro de su creación y revisión. Se añadió `.gitignore` para excluir el ejecutable compilado, los archivos de macOS y los temporales de compilación y Python. Se sustituyeron las rutas personales del historial por referencias a las carpetas del proyecto.
 
 El repositorio se prepara desde `incendio/`, con el código, la documentación y la evidencia de mediciones. Los apuntes y enunciados de la asignatura quedan fuera. Se revisó la redacción con humanizer y se comprobaron los enlaces locales.
+
+Se creó el repositorio privado [juanll04/incendio-ic](https://github.com/juanll04/incendio-ic) y se subió el proyecto en la rama `main`. El ejecutable local y los archivos de macOS quedan excluidos por `.gitignore`; los CSV se conservaron byte a byte en Git.

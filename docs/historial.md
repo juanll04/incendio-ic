@@ -225,3 +225,7 @@ Se añadió `.gitattributes` para identificar los resultados y las figuras como 
 ## 04-10-2026: Declaración del uso de IA
 
 Se añadió al README una sección de uso de IA. Identifica GPT-6 Astra como apoyo para la planificación y preparación de instrucciones, y GPT-6.1 Sol para implementación, refactorización, documentación y procesos de compilación, medición y comprobación con Docker. La declaración reconoce la generación de código y texto y distingue esa asistencia de las decisiones e indicaciones del equipo. También recoge su responsabilidad de comprender el programa y explicar las conclusiones. Se revisó la redacción con humanizer.
+
+## 04-10-2026: Función de Python en el análisis
+
+Se añadió al README una explicación del papel de cada lenguaje. C++ ejecuta la simulación y mide el bucle; Python automatiza las compilaciones y repeticiones, procesa los tiempos, genera tablas y gráficas y comprueba las salidas. Se aclaró que los porcentajes de GitHub representan el tamaño del código de cada lenguaje y que la evidencia generada se excluye mediante `.gitattributes`. Se contrastó la explicación con `scripts/medir.py` y `scripts/check.py` y se revisó la redacción con humanizer.

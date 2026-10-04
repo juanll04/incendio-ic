@@ -69,6 +69,14 @@ make docker-vectorization DOCKER_RESULTS=resultados_docker_actual
 
 Las gráficas se abren en un navegador o visor SVG. La animación del incendio se muestra en la terminal.
 
+## Papel de C++ y Python
+
+La simulación está implementada en C++: construcción del terreno, actualización de humedad y fuego, animación y cálculo de estadísticas. El tiempo de ejecución se mide dentro del programa C++.
+
+Python se utiliza para automatizar las campañas y procesar los resultados. `scripts/medir.py` compila las distintas configuraciones, ejecuta las repeticiones, calcula medianas y rangos, y genera los CSV, las gráficas SVG y los resúmenes. `scripts/check.py` comprueba la coherencia de los resultados y compara salidas entre versiones. Ambos scripts utilizan la biblioteca estándar de Python.
+
+Por eso GitHub muestra C++ y Python entre los lenguajes del repositorio. Los porcentajes se calculan por el tamaño de los archivos de código; no representan el tiempo de ejecución ni el reparto del trabajo realizado. El ensamblador generado y los resultados de medición están excluidos de ese cálculo mediante `.gitattributes`.
+
 ## Documentación
 
 | Documento | Qué encontrarás |

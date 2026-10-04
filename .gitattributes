@@ -1,0 +1,7 @@
+# La evidencia de mediciones no forma parte del código de la aplicación.
+resultados_docker/** linguist-documentation
+mediciones_locales.* linguist-documentation
+# Ensamblador generado por GCC: excluir de estadísticas y plegar en los diffs.
+resultados_docker/**/*.s linguist-generated
+# Figuras utilizadas en la documentación.
+docs/figuras/** linguist-documentation

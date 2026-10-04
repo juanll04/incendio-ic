@@ -1,18 +1,50 @@
 # Incendio forestal secuencial
 
-Proyecto de la Práctica 2 de Ingeniería de los Computadores (2026-27). Simula la propagación de un incendio en una cuadrícula para estudiar su coste computacional. Usa C++17 y reglas simplificadas; su ejecución es secuencial.
+Simulación de un incendio forestal para la Práctica 2 de Ingeniería de los Computadores (2026-27), en la Universidad de Alicante. El programa está escrito en C++17 y permite observar la propagación del fuego, estudiar el coste de cada iteración y analizar cómo repartir el trabajo entre varios procesadores.
 
-## Empezar
+## Ver cómo se propaga el fuego
 
-Necesitas un compilador C++17 y `make`. Ejecuta estos comandos desde `incendio/`:
+![Propagación del incendio desde el foco inicial hasta su extinción, con estadísticas en cada paso](docs/figuras/animacion.gif)
+
+El GIF muestra una ejecución real de 20 × 48 celdas, con semilla 42, humedad inicial del 28% y viento hacia el este al 60%. El fuego se extiende desde el foco inicial hasta extinguirse en el paso 44. El panel muestra los recuentos de celdas, la humedad media y el porcentaje de bosque afectado.
+
+## Cómo funciona
+
+El terreno contiene vegetación, fuego, zonas quemadas, agua y claros. Cada celda consulta sus ocho vecinos: la humedad dificulta el encendido y el viento favorece la propagación en su dirección. Cuando una celda arde, consume combustible hasta quedar quemada.
+
+Cada iteración calcula la humedad y el fuego a partir del estado anterior. Se utilizan dos buffers para que el orden de recorrido no altere el resultado. La ejecución es secuencial; la propuesta de paralelización estudia el reparto por filas y la sincronización entre pasos.
+
+La animación se controla desde el teclado:
+
+| Tecla | Acción |
+|---|---|
+| Espacio | Pausar o reanudar. |
+| `n` | Avanzar un paso cuando está pausada. |
+| `+` / `-` | Acelerar o ralentizar. |
+| `q` | Terminar y mostrar el resumen. |
+
+## Compilar y ejecutar
+
+Necesitas un compilador C++17 y `make`. Abre una terminal en la raíz del repositorio:
 
 ```sh
 make CXX=g++
 make visual                 # Animación de 20 × 48, hasta 70 pasos
-make run                    # Referencia de 1600 × 1600, 160 pasos
+make run                    # Medición de 1600 × 1600, 160 pasos
 ```
 
-Para animar con Docker Desktop:
+También puedes elegir los parámetros:
+
+```sh
+./incendio --visual --rows 20 --cols 48 --steps 70 --seed 42 \
+  --moisture .28 --wind-dir E --wind .6 --delay 180
+```
+
+En macOS, `/usr/bin/g++` ejecuta Apple Clang. Las mediciones Linux/GCC se realizan con Docker ARM64 sobre un M2.
+
+## Ejecutar con Docker
+
+Con Docker Desktop abierto, construye la imagen y lanza la animación:
 
 ```sh
 make docker-build
@@ -20,42 +52,46 @@ docker run --rm -it --platform linux/arm64 --cpus=2 --memory=2g \
   incendio-ic:practica2 ./incendio --visual --rows 20 --cols 48 --steps 70
 ```
 
-En macOS, `/usr/bin/g++` ejecuta Apple Clang. La práctica pide Linux/GCC para las mediciones: las campañas disponibles se hicieron en Docker ARM64 sobre un M2.
+`-it` permite ver los colores y usar el teclado. La imagen utiliza Ubuntu y compila el programa con GCC. Ejecuta de nuevo `make docker-build` después de modificar el código.
 
-## Animación de la propagación
+## Mediciones y gráficas
 
-![Propagación del incendio desde el foco inicial hasta su extinción, con estadísticas en cada paso](docs/figuras/animacion.gif)
+La campaña compara cuatro tamaños de terreno, cuatro cantidades de pasos y las opciones `-O0`, `-O2`, `-O3` y `-O3 -march=native`. Incluye tres repeticiones por caso, calentamientos y un diagnóstico del tiempo dedicado a humedad y fuego. Los resultados se muestran con medianas y rangos mínimo y máximo.
 
-Ejecución real de 20 × 48 celdas, semilla 42, humedad inicial del 28% y viento hacia el este al 60%. El GIF muestra cómo el fuego se extiende desde el foco inicial hasta extinguirse en el paso 44. El panel actualiza los recuentos y la proporción de bosque afectado en cada paso. Puedes ejecutar la animación con `make visual`.
+Puedes consultar las [gráficas](resultados_docker/mediciones_docker.svg), las [tablas de resultados](resultados_docker/mediciones_docker_resumen.md) y el [entorno de ejecución](resultados_docker/mediciones_docker_entorno.json). El [análisis de rendimiento](docs/rendimiento.md) explica el cronometraje, la fuente utilizada en cada medición y los informes de vectorización de GCC.
+
+Para generar una campaña nueva en su propia carpeta:
+
+```sh
+make docker-measure DOCKER_RESULTS=resultados_docker_actual
+make docker-vectorization DOCKER_RESULTS=resultados_docker_actual
+```
+
+Las gráficas se abren en un navegador o visor SVG. La animación del incendio se muestra en la terminal.
 
 ## Documentación
 
 | Documento | Qué encontrarás |
 |---|---|
-| [Uso](docs/uso.md) | Compilación, Docker, argumentos, controles y lectura de la salida. |
-| [Funcionamiento](docs/funcionamiento.md) | Reglas, doble buffer, memoria y recorrido por los módulos. |
-| [Rendimiento](docs/rendimiento.md) | Referencia, cronometraje, campañas, gráficas y evidencia SIMD. |
-| [Paralelización](docs/paralelizacion.md) | Dependencias, reparto de filas, sincronización y ganancias estimadas. |
-| [Historial](docs/historial.md) | Procedencia, decisiones y cambios con sus comprobaciones. |
+| [Uso](docs/uso.md) | Argumentos, compilación, Docker, controles y lectura de la salida. |
+| [Funcionamiento](docs/funcionamiento.md) | Reglas del modelo, doble buffer, memoria y explicación de los módulos. |
+| [Rendimiento](docs/rendimiento.md) | Mediciones, gráficas, opciones de compilación y evidencia SIMD. |
+| [Paralelización](docs/paralelizacion.md) | Dependencias, reparto por filas, barreras y estimaciones de ganancia. |
+| [Historial](docs/historial.md) | Procedencia del código, decisiones y cambios realizados. |
 
-## Carpetas
+## Organización del proyecto
 
 ```text
-incendio/
+incendio-ic/
 ├── README.md
-├── docs/
-│   ├── uso.md
-│   ├── funcionamiento.md
-│   ├── rendimiento.md
-│   ├── paralelizacion.md
-│   ├── historial.md
-│   └── figuras/          # Grafo de dependencias y GIF de la animación
-├── src/                  # Implementación C++
-├── include/              # Tipos y declaraciones
+├── src/                  # Implementación de los cinco módulos C++
+├── include/              # Tipos y declaraciones compartidos
 ├── scripts/              # Medición y comprobación
-├── resultados_docker/    # Campañas e informes históricos
+├── docs/                 # Explicación de la práctica y del código
+│   └── figuras/          # GIF y grafo de dependencias
+├── resultados_docker/    # Tablas, gráficas e informes de compilación
 ├── Makefile
 └── Dockerfile
 ```
 
-La [campaña archivada](resultados_docker/mediciones_docker_resumen.md) corresponde a la [fuente monolítica](resultados_docker/fuente_medida.cpp). La versión actual está modularizada y tiene estadísticas visuales coloreadas. Los resultados archivados identifican la fuente y el entorno exactos con los que se midieron. Para obtener resultados nuevos sin sustituir los históricos, sigue los comandos de [rendimiento](docs/rendimiento.md).
+`src/main.cpp` coordina la ejecución. Las opciones, las reglas de simulación, las estadísticas y la terminal están separadas en sus propios módulos. Para seguir el código, empieza por `include/modelo.h`, continúa con `src/main.cpp` y revisa las reglas en `src/simulacion.cpp`.

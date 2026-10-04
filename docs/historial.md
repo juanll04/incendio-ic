@@ -215,3 +215,9 @@ Por petición del usuario, se cambió la visibilidad de [juanll04/incendio-ic](h
 Se sustituyó la captura estática del README por `docs/figuras/animacion.gif`. La grabación recoge los 45 fotogramas de una ejecución real, desde el paso 0 hasta la extinción en el paso 44, con terreno de 20 × 48 y semilla 42. Se conservaron los colores y las estadísticas de la salida ANSI. El GIF se reproduce en bucle y mantiene más tiempo los fotogramas inicial y final.
 
 Se revisaron visualmente el avance del fuego y el estado final, y se ajustó el ancho para mostrar el panel completo. Se eliminó el PNG sustituido y se actualizó el enlace del README. El código y los datos medidos se conservan.
+
+## 04-10-2026: Presentación del proyecto y lenguajes en GitHub
+
+Se reorganizó el README para mostrar primero la animación y explicar el modelo, los controles, la ejecución local y Docker, las mediciones y la organización del código. Se retiró el párrafo final sobre la campaña archivada; la procedencia de cada medición sigue explicada en el documento de rendimiento y en sus informes. Se revisó la redacción con humanizer.
+
+Se añadió `.gitattributes` para identificar los resultados y las figuras como documentación, y los archivos `.s` como ensamblador generado por GCC. GitHub los excluye del cálculo de lenguajes; los informes se conservan para consultar la evidencia SIMD. No se cambió su contenido ni se reclasificó el ensamblador como C++.

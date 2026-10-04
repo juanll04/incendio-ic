@@ -221,3 +221,7 @@ Se revisaron visualmente el avance del fuego y el estado final, y se ajustó el 
 Se reorganizó el README para mostrar primero la animación y explicar el modelo, los controles, la ejecución local y Docker, las mediciones y la organización del código. Se retiró el párrafo final sobre la campaña archivada; la procedencia de cada medición sigue explicada en el documento de rendimiento y en sus informes. Se revisó la redacción con humanizer.
 
 Se añadió `.gitattributes` para identificar los resultados y las figuras como documentación, y los archivos `.s` como ensamblador generado por GCC. GitHub los excluye del cálculo de lenguajes; los informes se conservan para consultar la evidencia SIMD. No se cambió su contenido ni se reclasificó el ensamblador como C++.
+
+## 04-10-2026: Declaración del uso de IA
+
+Se añadió al README una sección de uso de IA. Identifica GPT-6 Astra como apoyo para la planificación y preparación de instrucciones, y GPT-6.1 Sol para implementación, refactorización, documentación y procesos de compilación, medición y comprobación con Docker. La declaración reconoce la generación de código y texto y distingue esa asistencia de las decisiones e indicaciones del equipo. También recoge su responsabilidad de comprender el programa y explicar las conclusiones. Se revisó la redacción con humanizer.

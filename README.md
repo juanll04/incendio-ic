@@ -95,3 +95,11 @@ incendio-ic/
 ```
 
 `src/main.cpp` coordina la ejecución. Las opciones, las reglas de simulación, las estadísticas y la terminal están separadas en sus propios módulos. Para seguir el código, empieza por `include/modelo.h`, continúa con `src/main.cpp` y revisa las reglas en `src/simulacion.cpp`.
+
+## Uso de IA
+
+Durante el desarrollo utilizamos OpenAI Codex con GPT-6 Astra para la planificación del proyecto y la preparación de las instrucciones de trabajo. GPT-6.1 Sol se utilizó para apoyar la implementación y refactorización del código, revisar la documentación y ejecutar procesos de compilación, medición y comprobación con Docker.
+
+La elección del problema y las decisiones sobre el alcance, la organización del código y la presentación de resultados se tomaron a partir de las propuestas e indicaciones del equipo. La asistencia de IA incluyó generación de código y texto; los cambios se contrastaron mediante ejecuciones del programa, resultados y gráficas. El equipo es responsable de comprender y explicar el código y de las conclusiones que presente en la práctica.
+
+El [historial de desarrollo](docs/historial.md) recoge las modificaciones y las comprobaciones realizadas.

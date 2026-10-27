@@ -12,4 +12,12 @@ void update_moisture(const Grid& current, Grid& next,
                      std::size_t rows, std::size_t columns);
 std::size_t update_fire(const Grid& current, Grid& next, const Options& options);
 
+// Calculan únicamente las filas [first, last), manteniendo los vecinos globales.
+void update_moisture_rows(const Grid& current, Grid& next,
+                          std::size_t rows, std::size_t columns,
+                          std::size_t first, std::size_t last);
+std::size_t update_fire_rows(const Grid& current, Grid& next,
+                             const Options& options,
+                             std::size_t first, std::size_t last);
+
 #endif

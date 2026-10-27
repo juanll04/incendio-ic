@@ -2,7 +2,11 @@
 
 [Inicio](../README.md) · [Uso](uso.md) · [Funcionamiento](funcionamiento.md) · [Rendimiento](rendimiento.md) · [Paralelización](paralelizacion.md) · [Historial](historial.md)
 
-La aplicación entregada por ahora es secuencial. Aquí se recogen las dependencias y las alternativas que podríamos desarrollar en una práctica posterior. Las ganancias calculadas son estimaciones.
+La aplicación secuencial se conserva en `incendio`. La versión `incendio_mpi`
+reparte filas contiguas entre procesos y reconstruye el estado completo con
+`MPI_Allgatherv` en cada paso. Las alternativas y ganancias teóricas de este
+documento siguen siendo propuestas o estimaciones, salvo los resultados
+identificados expresamente como medidos.
 
 ## Grafo de dependencias para revisión visual
 
@@ -25,7 +29,7 @@ flowchart TD
     F -->|fin| E[Estadísticas y checksum]
 ```
 
-La versión actual sigue siendo secuencial. Repartir filas completas reduce escritura intercalada, aunque no garantiza eliminar false sharing en los límites: dos bloques pueden tocar una misma línea de caché. Ejecutar toda A en un núcleo y toda B en otro es otra posibilidad funcional: escriben miembros diferentes, sin dependencia lógica, pero pueden disputar las mismas líneas de caché de `next`. Ese solapamiento debe medirse en la práctica posterior.
+Esta propuesta de memoria compartida no está implementada. Repartir filas completas reduce escritura intercalada, aunque no garantiza eliminar false sharing en los límites: dos bloques pueden tocar una misma línea de caché. Ejecutar toda A en un núcleo y toda B en otro es otra posibilidad funcional: escriben miembros diferentes, sin dependencia lógica, pero pueden disputar las mismas líneas de caché de `next`. Ese solapamiento queda pendiente de medición.
 
 La carga por fila tampoco es idéntica: árboles consultan ocho vecinos, mientras que agua, claros y celdas quemadas hacen menos trabajo. Empezar con bloques estáticos; considerar reparto dinámico solo si se observa desequilibrio suficiente para compensar el coste de planificación. GPU queda como alternativa para terrenos grandes, manteniendo ambos buffers residentes en el dispositivo; clúster requeriría intercambiar filas frontera en cada paso y evaluar el coste de comunicación.
 

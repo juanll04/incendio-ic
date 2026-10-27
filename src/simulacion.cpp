@@ -49,7 +49,12 @@ Grid initialize(const Options& options) {
 
 void update_moisture(const Grid& current, Grid& next,
                      size_t rows, size_t columns) {
-    for (size_t row = 0; row < rows; ++row) {
+    update_moisture_rows(current, next, rows, columns, 0, rows);
+}
+
+void update_moisture_rows(const Grid& current, Grid& next,
+                          size_t rows, size_t columns, size_t first, size_t last) {
+    for (size_t row = first; row < last; ++row) {
         for (size_t column = 0; column < columns; ++column) {
             size_t position = index(row, column, columns);
             if (current[position].state != TREE && current[position].state != FIRE) {
@@ -83,8 +88,13 @@ void update_moisture(const Grid& current, Grid& next,
 }
 
 size_t update_fire(const Grid& current, Grid& next, const Options& options) {
+    return update_fire_rows(current, next, options, 0, options.rows);
+}
+
+size_t update_fire_rows(const Grid& current, Grid& next, const Options& options,
+                        size_t first, size_t last) {
     size_t active_cells = 0;
-    for (size_t row = 0; row < options.rows; ++row) {
+    for (size_t row = first; row < last; ++row) {
         for (size_t column = 0; column < options.cols; ++column) {
             size_t position = index(row, column, options.cols);
             const Cell& current_cell = current[position];

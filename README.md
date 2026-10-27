@@ -33,6 +33,22 @@ make visual                 # Animación de 20 × 48, hasta 70 pasos
 make run                    # Medición de 1600 × 1600, 160 pasos
 ```
 
+Para la versión MPI (requiere `mpic++` y `mpirun`):
+
+```sh
+make incendio_mpi
+mpirun -np 3 ./incendio_mpi --measure --rows 1600 --cols 1600 --steps 160
+mpirun -np 3 ./incendio_mpi --measure --rows 1600 --cols 1600 --steps 160 --mpi-sync gather-bcast
+```
+
+Cada proceso calcula un bloque de filas. Al terminar cada paso,
+`MPI_Allgatherv` reúne el estado completo para que todos puedan leer los
+vecinos del paso siguiente. La opción `--mpi-sync gather-bcast` compara una
+reunión en el proceso 0 seguida de `MPI_Bcast`. La salida muestra el tiempo máximo del bucle
+entre procesos y los máximos de cómputo y comunicación por separado.
+Esta primera estrategia replica el terreno en cada proceso; su coste de
+comunicación puede limitar la ganancia en mapas grandes o varios nodos.
+
 También puedes elegir los parámetros:
 
 ```sh

@@ -14,6 +14,8 @@ all: incendio
 # Cada .cpp se compila como unidad independiente; los .h son dependencias de reconstrucción.
 incendio: $(SOURCES) $(HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(SOURCES) -o incendio
+incendio_mpi: src/main_mpi.cpp src/opciones.cpp src/simulacion.cpp src/estadisticas.cpp $(HEADERS)
+	mpic++ $(CPPFLAGS) $(CXXFLAGS) src/main_mpi.cpp src/opciones.cpp src/simulacion.cpp src/estadisticas.cpp -o incendio_mpi
 run: incendio
 	./incendio --measure --rows 1600 --cols 1600 --steps 160
 visual: incendio
@@ -21,7 +23,7 @@ visual: incendio
 check: incendio
 	python3 scripts/check.py
 clean:
-	rm -f incendio
+	rm -f incendio incendio_mpi
 vectorization:
 	mkdir -p "$(REPORT_DIR)"
 	@set -e; for source in $(SOURCES); do \

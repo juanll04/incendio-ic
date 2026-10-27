@@ -41,13 +41,21 @@ mpirun -np 3 ./incendio_mpi --measure --rows 1600 --cols 1600 --steps 160
 mpirun -np 3 ./incendio_mpi --measure --rows 1600 --cols 1600 --steps 160 --mpi-sync gather-bcast
 ```
 
-Cada proceso calcula un bloque de filas. Al terminar cada paso,
-`MPI_Allgatherv` reúne el estado completo para que todos puedan leer los
-vecinos del paso siguiente. La opción `--mpi-sync gather-bcast` compara una
-reunión en el proceso 0 seguida de `MPI_Bcast`. La salida muestra el tiempo máximo del bucle
-entre procesos y los máximos de cómputo y comunicación por separado.
-Esta primera estrategia replica el terreno en cada proceso; su coste de
-comunicación puede limitar la ganancia en mapas grandes o varios nodos.
+### Qué hace la versión MPI
+
+El proceso 0 crea el terreno con los parámetros y la semilla elegidos y lo
+distribuye mediante `MPI_Bcast`. Cada proceso conserva una copia completa para
+consultar las celdas vecinas, pero calcula la humedad y la propagación del
+fuego solo en un bloque contiguo de filas. Ambas fases leen el estado de la
+iteración anterior y escriben el resultado en una segunda cuadrícula.
+
+Al terminar cada paso, los procesos reconstruyen el terreno completo con
+`MPI_Allgatherv` (opción predeterminada) o con `MPI_Gatherv` seguido de
+`MPI_Bcast` (`--mpi-sync gather-bcast`). La versión MPI admite solo
+`--measure` y muestra el tiempo del bucle, el cálculo y la comunicación del
+proceso más lento, además de un checksum para comparar el resultado con la
+versión secuencial. Intercambiar toda la cuadrícula en cada paso puede limitar
+la ganancia, sobre todo en terrenos pequeños o con muchos procesos.
 
 También puedes elegir los parámetros:
 
